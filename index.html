@@ -473,7 +473,7 @@ async function clockIn(name) {
   data.clocks[d][name] = { on: true, in: t, out: null };
   renderEmps();
   await save();
-  writeToSheet({ action: 'clockIn', name, date: dateStr, inTime: t });
+  writeToSheet({ action: 'clockIn', name, inTime: t });
   toast(name + '　上班打卡　' + t, 'success');
 }
 
@@ -486,7 +486,7 @@ async function clockOut(name) {
   data.clocks[d][name] = { on: false, in: prev.in || t, out: t };
   renderEmps();
   await save();
-  writeToSheet({ action: 'clockOut', name, date: dateStr, inTime: prev.in || t, outTime: t });
+  writeToSheet({ action: 'clockOut', name, inTime: prev.in || t, outTime: t });
   toast(name + '　下班打卡　' + t, 'info');
 }
 
