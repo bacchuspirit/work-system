@@ -459,9 +459,10 @@ async function removeEmp(name) {
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbyUTNmo9bAMfMgtrsNeX-yoDdG9pk30WNY6J-QiozGr-JEqs_7qas3-cO63-0t8YWT-Pg/exec';
 
 function writeToSheet(params) {
-  // 用 fetch no-cors：瀏覽器送出後不讀回應，Apps Script doGet 收到即寫入
+  // <img> src 觸發 GET：完全繞過 CORS，Apps Script doGet 正常收到
   const url = GAS_URL + '?' + new URLSearchParams(params).toString();
-  fetch(url, { method: 'GET', mode: 'no-cors' }).catch(() => {});
+  const img = new Image();
+  img.src = url;
 }
 
 async function clockIn(name) {
