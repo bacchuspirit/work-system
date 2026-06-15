@@ -14,12 +14,13 @@
     --white: #FFFFFF; --bg: #F5F6F8; --bg-2: #ECEEF2;
     --mint: #00C48C; --mint-lt: #E6F9F3; --mint-dk: #009E70;
     --coral: #F24E4E; --coral-lt: #FEF0F0;
-    --purple: #7B6EF6;
+    --purple: #7B6EF6; --amber: #F59E0B;
     --text-1: #1A1D2E; --text-2: #5A5E72; --text-3: #9A9DB0;
     --border: #E2E4EC; --radius: 10px; --radius-lg: 14px;
   }
   body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text-1); min-height: 100vh; }
 
+  /* TOPBAR */
   .topbar { background: var(--navy); padding: 0 28px; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
   .topbar-left { display: flex; align-items: center; gap: 16px; }
   .logo { display: flex; align-items: center; gap: 9px; text-decoration: none; }
@@ -29,17 +30,19 @@
   .topbar-div { width: 1px; height: 20px; background: var(--navy-3); }
   .date-chip { font-size: 12px; color: rgba(255,255,255,0.5); }
   .sync-pill { font-size: 11px; font-family: 'DM Mono', monospace; padding: 3px 10px; border-radius: 20px; background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.45); transition: all .3s; white-space: nowrap; }
-  .sync-pill.ok    { background: rgba(0,196,140,0.2); color: var(--mint); }
+  .sync-pill.ok    { background: rgba(0,196,140,0.2);  color: var(--mint); }
   .sync-pill.busy  { background: rgba(123,110,246,0.2); color: #a89df8; }
-  .sync-pill.error { background: rgba(242,78,78,0.2); color: #f08080; }
+  .sync-pill.error { background: rgba(242,78,78,0.2);   color: #f08080; }
   .clock-display { font-family: 'DM Mono', monospace; font-size: 20px; font-weight: 500; color: #fff; letter-spacing: 1px; }
   .clock-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--mint); margin-right: 8px; animation: pulse 2s ease-in-out infinite; vertical-align: middle; position: relative; top: -1px; }
   @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
 
+  /* LAYOUT */
   .main { max-width: 1060px; margin: 0 auto; padding: 28px 24px 60px; }
   .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
   @media(max-width:720px){ .grid{grid-template-columns:1fr} .topbar{padding:0 16px} .main{padding:20px 16px 60px} }
 
+  /* CARD */
   .card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
   .card-head { padding: 18px 20px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
   .card-title { font-size: 13px; font-weight: 600; color: var(--text-1); letter-spacing: .4px; text-transform: uppercase; display: flex; align-items: center; gap: 7px; }
@@ -48,6 +51,7 @@
   .pill.active { background: var(--mint-lt); color: var(--mint-dk); }
   .card-body { padding: 16px 20px 20px; }
 
+  /* INPUTS */
   .add-row { display: flex; gap: 7px; margin-bottom: 14px; }
   .add-row input { flex: 1; height: 38px; padding: 0 12px; font-size: 13px; font-family: 'Inter', sans-serif; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text-1); outline: none; transition: border-color .15s, background .15s; }
   .add-row input:focus { border-color: var(--purple); background: var(--white); }
@@ -55,6 +59,7 @@
   .btn-add { width: 38px; height: 38px; border: none; border-radius: var(--radius); background: var(--navy); color: #fff; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .15s; }
   .btn-add:hover { background: var(--navy-3); }
 
+  /* EMPLOYEE */
   .emp-list { display: flex; flex-direction: column; gap: 8px; }
   .emp-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--bg); transition: border-color .2s, background .2s; }
   .emp-row.checked-in { border-color: #b2ecd8; background: var(--mint-lt); }
@@ -65,11 +70,12 @@
   .emp-time.on { color: var(--mint-dk); }
   .btn-clock { height: 30px; padding: 0 12px; border: none; border-radius: 7px; font-size: 12px; font-weight: 500; font-family: 'Inter', sans-serif; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; gap: 5px; transition: opacity .15s, transform .1s; }
   .btn-clock:active { transform: scale(.96); }
-  .btn-in { background: var(--mint); color: #fff; } .btn-in:hover { opacity: .88; }
+  .btn-in  { background: var(--mint);  color: #fff; } .btn-in:hover  { opacity: .88; }
   .btn-out { background: var(--coral); color: #fff; } .btn-out:hover { opacity: .88; }
   .btn-remove { background: none; border: none; color: var(--text-3); cursor: pointer; font-size: 16px; line-height: 1; padding: 2px; flex-shrink: 0; transition: color .15s; }
   .btn-remove:hover { color: var(--coral); }
 
+  /* TODO */
   .todo-add-wrap { margin-bottom: 14px; }
   .todo-textarea { width: 100%; min-height: 64px; padding: 10px 12px; font-size: 13px; font-family: 'Inter', sans-serif; line-height: 1.6; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text-1); outline: none; resize: vertical; transition: border-color .15s, background .15s; }
   .todo-textarea:focus { border-color: var(--purple); background: var(--white); }
@@ -77,9 +83,8 @@
   .todo-add-btns { display: flex; justify-content: flex-end; margin-top: 6px; }
   .btn-add-todo { height: 32px; padding: 0 14px; border: none; border-radius: var(--radius); background: var(--navy); color: #fff; font-size: 12px; font-weight: 500; font-family: 'Inter', sans-serif; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: background .15s; }
   .btn-add-todo:hover { background: var(--navy-3); }
-
   .todo-list { display: flex; flex-direction: column; gap: 6px; }
-  .todo-item { display: flex; align-items: flex-start; gap: 10px; padding: 9px 12px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--bg); transition: opacity .2s; }
+  .todo-item { display: flex; align-items: flex-start; gap: 10px; padding: 9px 12px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--bg); }
   .todo-item.done { opacity: .5; }
   .check-btn { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--border); background: var(--white); cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: border-color .15s, background .15s; margin-top: 2px; }
   .check-btn:hover { border-color: var(--mint); }
@@ -95,18 +100,19 @@
   .btn-clear { font-size: 12px; padding: 5px 11px; border-radius: 7px; border: 1px solid var(--border); background: transparent; color: var(--text-2); cursor: pointer; display: flex; align-items: center; gap: 5px; transition: background .15s, color .15s, border-color .15s; }
   .btn-clear:hover { background: var(--coral-lt); border-color: #f9b0b0; color: var(--coral); }
   .empty-hint { text-align: center; padding: 24px 0; font-size: 13px; color: var(--text-3); }
-
   .progress-wrap { margin-top: 10px; }
   .progress-label { font-size: 11px; color: var(--text-3); margin-bottom: 5px; display: flex; justify-content: space-between; }
   .progress-bar { height: 4px; background: var(--bg-2); border-radius: 2px; overflow: hidden; }
   .progress-fill { height: 100%; background: var(--mint); border-radius: 2px; transition: width .4s ease; }
 
+  /* TOAST */
   .toast-container { position: fixed; bottom: 28px; right: 28px; display: flex; flex-direction: column; gap: 8px; z-index: 9999; pointer-events: none; }
   .toast { background: var(--navy); color: #fff; font-size: 13px; padding: 10px 16px; border-radius: var(--radius); opacity: 0; transform: translateY(8px); transition: opacity .25s, transform .25s; max-width: 300px; }
   .toast.show { opacity: 1; transform: translateY(0); }
   .toast.success { border-left: 3px solid var(--mint); }
   .toast.info    { border-left: 3px solid var(--purple); }
-  .toast.warn    { border-left: 3px solid #f0a030; }
+  .toast.warn    { border-left: 3px solid var(--amber); }
+  .toast.error   { border-left: 3px solid var(--coral); }
 </style>
 </head>
 <body>
@@ -121,7 +127,7 @@
     </a>
     <div class="topbar-div"></div>
     <span class="date-chip" id="date-chip"></span>
-    <span class="sync-pill busy" id="sync-pill">⟳ 載入中</span>
+    <span class="sync-pill busy" id="sync-pill">⟳ 連線中</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <span class="clock-dot"></span>
@@ -144,7 +150,7 @@
           <input type="text" id="new-emp" placeholder="輸入員工姓名新增…" />
           <button class="btn-add" onclick="addEmp()" aria-label="新增">+</button>
         </div>
-        <div class="emp-list" id="emp-list"><div class="empty-hint">載入中…</div></div>
+        <div class="emp-list" id="emp-list"><div class="empty-hint">連線中…</div></div>
       </div>
     </div>
 
@@ -166,7 +172,7 @@
             </button>
           </div>
         </div>
-        <div id="todo-list" class="todo-list"><div class="empty-hint">載入中…</div></div>
+        <div id="todo-list" class="todo-list"><div class="empty-hint">連線中…</div></div>
         <div class="progress-wrap" id="progress-wrap" style="display:none">
           <div class="progress-label"><span>完成進度</span><span id="progress-pct">0%</span></div>
           <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
@@ -186,230 +192,237 @@
 <div class="toast-container" id="toast-container"></div>
 
 <script>
-// ═══════════════════════════════════════════════════════════════
-//  ★ 唯一需要修改的地方：貼上你的 Apps Script 部署網址
-// ═══════════════════════════════════════════════════════════════
-const API = 'https://script.google.com/macros/s/AKfycbyUTNmo9bAMfMgtrsNeX-yoDdG9pk30WNY6J-QiozGr-JEqs_7qas3-cO63-0t8YWT-Pg/exec';
+// ═══════════════════════════════════════════════
+//  JSONBin 設定（已內建，無需手動設定）
+// ═══════════════════════════════════════════════
+const JB_KEY  = '$2a$10$llUzLpCGmMwxLbBfP34j3O2He8.yAJusTxj.3IRblOK4iCwktRjL2';
+const JB_API  = 'https://api.jsonbin.io/v3';
+const BIN_NAME = 'WorkdaySystem';
+const LS_BIN  = 'wds_bin_id_v2';
+const POLL_MS = 6000;
 
-// ═══════════════════════════════════════════════════════════════
-//  狀態
-// ═══════════════════════════════════════════════════════════════
+let BIN_ID   = localStorage.getItem(LS_BIN) || '';
+let data     = { emps: [], clocks: {}, todos: {} };
+let isSaving = false;
+let pollTimer = null;
+
+// ═══════════════════════════════════════════════
+//  JSONBin REST API
+// ═══════════════════════════════════════════════
+const HDR = () => ({
+  'Content-Type': 'application/json',
+  'X-Master-Key': JB_KEY,
+  'X-Bin-Versioning': 'false'
+});
+
+async function jbCreate() {
+  const res = await fetch(JB_API + '/b', {
+    method: 'POST',
+    headers: { ...HDR(), 'X-Bin-Name': BIN_NAME },
+    body: JSON.stringify({ emps: [], clocks: {}, todos: {} })
+  });
+  if (!res.ok) throw new Error('建立 Bin 失敗：' + res.status);
+  const j = await res.json();
+  return j.metadata.id;
+}
+
+async function jbRead() {
+  const res = await fetch(JB_API + '/b/' + BIN_ID + '/latest', {
+    headers: { 'X-Master-Key': JB_KEY, 'X-Bin-Meta': 'false' }
+  });
+  if (!res.ok) throw new Error('讀取失敗：' + res.status);
+  return res.json();
+}
+
+async function jbWrite(payload) {
+  const res = await fetch(JB_API + '/b/' + BIN_ID, {
+    method: 'PUT',
+    headers: HDR(),
+    body: JSON.stringify(payload)
+  });
+  if (!res.ok) throw new Error('寫入失敗：' + res.status);
+}
+
+// ═══════════════════════════════════════════════
+//  初始化：取得或建立 Bin
+// ═══════════════════════════════════════════════
+async function init() {
+  setSyncUI('busy', '⟳ 連線中');
+  try {
+    if (!BIN_ID) {
+      // 嘗試找已存在的同名 Bin
+      const listRes = await fetch(JB_API + '/b', {
+        headers: { 'X-Master-Key': JB_KEY }
+      });
+      if (listRes.ok) {
+        const bins = await listRes.json();
+        if (Array.isArray(bins)) {
+          const found = bins.find(b => b?.record?.metadata?.name === BIN_NAME);
+          if (found) BIN_ID = found.record.metadata.id;
+        }
+      }
+      // 還是找不到就新建
+      if (!BIN_ID) BIN_ID = await jbCreate();
+      localStorage.setItem(LS_BIN, BIN_ID);
+    }
+
+    // 讀取資料
+    await syncFromServer();
+    // 啟動輪詢
+    clearInterval(pollTimer);
+    pollTimer = setInterval(poll, POLL_MS);
+  } catch(e) {
+    setSyncUI('error', '✕ 連線失敗');
+    toast('連線失敗，5 秒後重試…', 'error');
+    setTimeout(init, 5000);
+  }
+}
+
+// ═══════════════════════════════════════════════
+//  同步
+// ═══════════════════════════════════════════════
+async function syncFromServer() {
+  const fresh = await jbRead();
+  data = {
+    emps:   Array.isArray(fresh.emps)            ? fresh.emps   : [],
+    clocks: fresh.clocks && typeof fresh.clocks === 'object' ? fresh.clocks : {},
+    todos:  fresh.todos  && typeof fresh.todos  === 'object' ? fresh.todos  : {}
+  };
+  renderAll();
+  setSyncUI('ok', '● 已同步');
+}
+
+async function poll() {
+  if (isSaving) return;
+  try {
+    await syncFromServer();
+  } catch(e) {
+    setSyncUI('error', '✕ 同步失敗');
+  }
+}
+
+async function save() {
+  isSaving = true;
+  setSyncUI('busy', '⟳ 儲存中');
+  try {
+    await jbWrite(data);
+    setSyncUI('ok', '● 已同步');
+  } catch(e) {
+    setSyncUI('error', '✕ 儲存失敗');
+    toast('儲存失敗，請重試', 'error');
+  } finally {
+    isSaving = false;
+  }
+}
+
+// ═══════════════════════════════════════════════
+//  工具
+// ═══════════════════════════════════════════════
+function todayKey() {
+  return new Date().toISOString().slice(0,10).replace(/-/g,'');
+}
+function nowTime() {
+  return new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+}
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function setSyncUI(state, msg) {
+  const el = document.getElementById('sync-pill');
+  el.className = 'sync-pill ' + state;
+  el.textContent = msg;
+}
+function toast(msg, type='info') {
+  const c = document.getElementById('toast-container');
+  const el = document.createElement('div');
+  el.className = 'toast ' + type;
+  el.textContent = msg;
+  c.appendChild(el);
+  requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('show')));
+  setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 300); }, 3000);
+}
+
+// ═══════════════════════════════════════════════
+//  渲染
+// ═══════════════════════════════════════════════
 const PALETTES = [
   ['#EEF0FF','#5A52D5'],['#E6F9F3','#009E70'],['#FFF0EC','#D84A1B'],
   ['#FFF5E6','#C47A15'],['#F9EEFF','#8B3FD4'],['#E8F5FF','#1A6FB8'],
   ['#FFEEF5','#C4306A'],['#F0FFF4','#276E3C']
 ];
 
-let emps   = [];
-let states = {};
-let todos  = [];
-let pollTimer = null;
-
-// ═══════════════════════════════════════════════════════════════
-//  JSONP 讀取（唯一能繞過 CORS 的純前端方式）
-// ═══════════════════════════════════════════════════════════════
-let _cbIdx = 0;
-
-function jsonp(extraParams) {
-  return new Promise((resolve, reject) => {
-    const cbName = '__cb' + (++_cbIdx);
-    const timeout = setTimeout(() => {
-      delete window[cbName];
-      const s = document.getElementById('_jsonp_' + cbName);
-      if (s) s.remove();
-      reject(new Error('timeout'));
-    }, 12000);
-
-    window[cbName] = function(data) {
-      clearTimeout(timeout);
-      delete window[cbName];
-      const s = document.getElementById('_jsonp_' + cbName);
-      if (s) s.remove();
-      resolve(data);
-    };
-
-    const params = new URLSearchParams({ ...extraParams, callback: cbName, t: Date.now() });
-    const script = document.createElement('script');
-    script.id  = '_jsonp_' + cbName;
-    script.src = API + '?' + params.toString();
-    script.onerror = () => {
-      clearTimeout(timeout);
-      delete window[cbName];
-      script.remove();
-      reject(new Error('script error'));
-    };
-    document.head.appendChild(script);
-  });
-}
-
-// ═══════════════════════════════════════════════════════════════
-//  POST 寫入（使用 no-cors fetch，Apps Script 會收到並處理）
-// ═══════════════════════════════════════════════════════════════
-function apiPost(params) {
-  // 用 form-urlencoded + no-cors，Apps Script doPost 可以從 e.parameter 讀到
-  const body = new URLSearchParams(params).toString();
-  return fetch(API, {
-    method: 'POST',
-    mode:   'no-cors',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body
-  }).catch(() => {});
-}
-
-// ═══════════════════════════════════════════════════════════════
-//  同步 UI
-// ═══════════════════════════════════════════════════════════════
-function setSyncUI(state, msg) {
-  const el = document.getElementById('sync-pill');
-  el.className   = 'sync-pill ' + state;
-  el.textContent = msg;
-}
-
-// ═══════════════════════════════════════════════════════════════
-//  拉取所有資料（JSONP）
-// ═══════════════════════════════════════════════════════════════
-async function pullState(silent) {
-  if (!silent) setSyncUI('busy', '⟳ 同步中');
-  try {
-    const data = await jsonp({ action: 'getAll' });
-    if (data.emps)  { emps = data.emps; states = data.states || {}; renderEmps(); }
-    if (data.todos) { todos = data.todos; renderTodos(); }
-    setSyncUI('ok', '● 已同步');
-  } catch(e) {
-    setSyncUI('error', '✕ 無法連線');
-  }
-}
-
-// 寫入後等 1.2 秒再 pull，給 Sheet 處理時間
-function pullAfterWrite() {
-  setTimeout(() => pullState(true), 1200);
-}
-
-// ═══════════════════════════════════════════════════════════════
-//  工具
-// ═══════════════════════════════════════════════════════════════
-function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-}
-function uid()     { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
-function nowTime() { return new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); }
-function nowDate() { return new Date().toLocaleDateString('zh-TW'); }
+function renderAll() { renderEmps(); renderTodos(); }
 function initials(n) { return n.length >= 2 ? n.slice(-2) : n; }
 
-// ═══════════════════════════════════════════════════════════════
-//  渲染：員工
-// ═══════════════════════════════════════════════════════════════
 function renderEmps() {
-  const list = document.getElementById('emp-list');
+  const list   = document.getElementById('emp-list');
+  const emps   = data.emps || [];
+  const today  = todayKey();
+  const clocks = (data.clocks && data.clocks[today]) || {};
   list.innerHTML = '';
   let inCount = 0;
 
   if (!emps.length) {
     list.innerHTML = '<div class="empty-hint">尚未新增員工</div>';
-    document.getElementById('in-badge').textContent = '0 人上班中';
-    document.getElementById('in-badge').className   = 'pill';
-    return;
+    setEmpBadge(0); return;
   }
 
   emps.forEach((name, i) => {
-    const s = states[name] || { on: false, in: null, out: null };
+    const s = clocks[name] || { on: false, in: null, out: null };
     if (s.on) inCount++;
     const [bg, fg] = PALETTES[i % PALETTES.length];
-
     let timeStr = '尚未打卡', timeCls = '';
     if (s.on && s.in)  { timeStr = '上班中　' + s.in; timeCls = 'on'; }
     else if (s.in)     { timeStr = s.in + (s.out ? '　→　' + s.out : ''); }
-
+    const en = esc(name);
     const row = document.createElement('div');
     row.className = 'emp-row' + (s.on ? ' checked-in' : '');
     row.innerHTML = `
       <div class="avatar" style="background:${bg};color:${fg}">${initials(name)}</div>
       <div class="emp-info">
-        <div class="emp-name">${esc(name)}</div>
+        <div class="emp-name">${en}</div>
         <div class="emp-time ${timeCls}">${timeStr}</div>
       </div>
       ${s.on
-        ? `<button class="btn-clock btn-out" onclick="clockOut('${esc(name)}')">
-             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-             下班</button>`
-        : `<button class="btn-clock btn-in" onclick="clockIn('${esc(name)}')">
-             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-             上班</button>`}
-      <button class="btn-remove" onclick="removeEmp('${esc(name)}')" aria-label="移除">×</button>`;
+        ? `<button class="btn-clock btn-out" onclick="clockOut('${en}')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            下班</button>`
+        : `<button class="btn-clock btn-in" onclick="clockIn('${en}')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+            上班</button>`}
+      <button class="btn-remove" onclick="removeEmp('${en}')" aria-label="移除">×</button>`;
     list.appendChild(row);
   });
-
-  const badge = document.getElementById('in-badge');
-  badge.textContent = inCount + ' 人上班中';
-  badge.className   = 'pill' + (inCount > 0 ? ' active' : '');
+  setEmpBadge(inCount);
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  員工操作
-// ═══════════════════════════════════════════════════════════════
-function clockIn(name) {
-  const t = nowTime(), d = nowDate();
-  states[name] = { on: true, in: t, out: null };
-  renderEmps();
-  apiPost({ action:'clockIn', name, date:d, inTime:t });
-  pullAfterWrite();
-  toast(name + '　上班打卡　' + t, 'success');
+function setEmpBadge(n) {
+  const b = document.getElementById('in-badge');
+  b.textContent = n + ' 人上班中';
+  b.className = 'pill' + (n > 0 ? ' active' : '');
 }
 
-function clockOut(name) {
-  const t = nowTime(), d = nowDate();
-  const inT = (states[name] || {}).in || '';
-  states[name] = { on: false, in: inT, out: t };
-  renderEmps();
-  apiPost({ action:'clockOut', name, date:d, inTime:inT, outTime:t });
-  pullAfterWrite();
-  toast(name + '　下班打卡　' + t, 'info');
-}
-
-function addEmp() {
-  const inp = document.getElementById('new-emp');
-  const n   = inp.value.trim();
-  if (!n) return;
-  if (emps.includes(n)) { toast('員工已存在', 'warn'); return; }
-  emps.push(n);
-  renderEmps();
-  inp.value = '';
-  apiPost({ action:'addEmp', name:n });
-  pullAfterWrite();
-}
-
-function removeEmp(name) {
-  if (!confirm('確定移除「' + name + '」？')) return;
-  emps = emps.filter(e => e !== name);
-  delete states[name];
-  renderEmps();
-  apiPost({ action:'removeEmp', name });
-  pullAfterWrite();
-}
-
-// ═══════════════════════════════════════════════════════════════
-//  渲染：Todo
-// ═══════════════════════════════════════════════════════════════
 function renderTodos() {
   const list  = document.getElementById('todo-list');
+  const today = todayKey();
+  const items = (data.todos && data.todos[today]) || [];
   list.innerHTML = '';
-  const total = todos.length;
-  const done  = todos.filter(t => t.done).length;
+  const total = items.length;
+  const done  = items.filter(t => t.done).length;
 
   if (!total) {
     list.innerHTML = '<div class="empty-hint">今天還沒有待辦事項</div>';
   } else {
-    todos.forEach(t => {
+    items.forEach(t => {
       const item = document.createElement('div');
       item.className = 'todo-item' + (t.done ? ' done' : '');
       item.innerHTML = `
-        <button class="check-btn ${t.done?'checked':''}" onclick="toggleTodo('${esc(String(t.id))}')" aria-label="切換完成"></button>
+        <button class="check-btn ${t.done?'checked':''}" onclick="toggleTodo('${esc(t.id)}')" aria-label="切換完成"></button>
         <span class="todo-text ${t.done?'done':''}">${esc(t.text)}</span>
-        <button class="btn-del" onclick="delTodo('${esc(String(t.id))}')" aria-label="刪除">×</button>`;
+        <button class="btn-del" onclick="delTodo('${esc(t.id)}')" aria-label="刪除">×</button>`;
       list.appendChild(item);
     });
   }
-
   document.getElementById('todo-badge').textContent = total + ' 項';
   document.getElementById('todo-stat').textContent  = total ? done + ' / ' + total + ' 完成' : '';
   const pw = document.getElementById('progress-wrap');
@@ -421,261 +434,113 @@ function renderTodos() {
   }
 }
 
-// ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
+//  員工操作
+// ═══════════════════════════════════════════════
+async function addEmp() {
+  const inp = document.getElementById('new-emp');
+  const n = inp.value.trim();
+  if (!n) return;
+  if ((data.emps||[]).includes(n)) { toast('員工已存在', 'warn'); return; }
+  inp.value = '';
+  data.emps = [...(data.emps||[]), n];
+  renderEmps();
+  await save();
+}
+
+async function removeEmp(name) {
+  if (!confirm('確定移除「' + name + '」？')) return;
+  data.emps = (data.emps||[]).filter(e => e !== name);
+  renderEmps();
+  await save();
+}
+
+async function clockIn(name) {
+  const t = nowTime(), d = todayKey();
+  if (!data.clocks)    data.clocks    = {};
+  if (!data.clocks[d]) data.clocks[d] = {};
+  data.clocks[d][name] = { on: true, in: t, out: null };
+  renderEmps();
+  await save();
+  toast(name + '　上班打卡　' + t, 'success');
+}
+
+async function clockOut(name) {
+  const t = nowTime(), d = todayKey();
+  if (!data.clocks)    data.clocks    = {};
+  if (!data.clocks[d]) data.clocks[d] = {};
+  const prev = data.clocks[d][name] || {};
+  data.clocks[d][name] = { on: false, in: prev.in || t, out: t };
+  renderEmps();
+  await save();
+  toast(name + '　下班打卡　' + t, 'info');
+}
+
+// ═══════════════════════════════════════════════
 //  Todo 操作
-// ═══════════════════════════════════════════════════════════════
-function addTodo() {
+// ═══════════════════════════════════════════════
+async function addTodo() {
   const ta  = document.getElementById('new-todo');
   const txt = ta.value.trim();
   if (!txt) return;
-  const id = uid();
-  todos.push({ id, text: txt, done: false });
-  renderTodos();
   ta.value = '';
-  apiPost({ action:'addTodo', id, text: txt });
-  pullAfterWrite();
+  const d  = todayKey();
+  const id = 't' + Date.now().toString(36);
+  if (!data.todos)    data.todos    = {};
+  if (!data.todos[d]) data.todos[d] = [];
+  data.todos[d].push({ id, text: txt, done: false });
+  renderTodos();
+  await save();
 }
 
-function toggleTodo(id) {
-  const t = todos.find(x => x.id === id);
+async function toggleTodo(id) {
+  const d = todayKey();
+  const items = (data.todos && data.todos[d]) || [];
+  const t = items.find(x => x.id === id);
   if (!t) return;
   t.done = !t.done;
   renderTodos();
-  apiPost({ action:'toggleTodo', id, done: t.done ? '1' : '0' });
-  pullAfterWrite();
+  await save();
 }
 
-function delTodo(id) {
-  todos = todos.filter(x => x.id !== id);
+async function delTodo(id) {
+  const d = todayKey();
+  if (!data.todos || !data.todos[d]) return;
+  data.todos[d] = data.todos[d].filter(x => x.id !== id);
   renderTodos();
-  apiPost({ action:'deleteTodo', id });
+  await save();
 }
 
-function clearDone() {
-  if (!todos.some(t => t.done)) { toast('沒有已完成的事項', 'warn'); return; }
+async function clearDone() {
+  const d     = todayKey();
+  const items = (data.todos && data.todos[d]) || [];
+  if (!items.some(t => t.done)) { toast('沒有已完成的事項', 'warn'); return; }
   if (!confirm('確定清除所有已完成的事項？')) return;
-  const ids = todos.filter(t => t.done).map(t => t.id);
-  todos = todos.filter(t => !t.done);
+  data.todos[d] = items.filter(t => !t.done);
   renderTodos();
-  ids.forEach(id => apiPost({ action:'deleteTodo', id }));
-  pullAfterWrite();
+  await save();
   toast('已清除完成項目', 'info');
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  Toast
-// ═══════════════════════════════════════════════════════════════
-function toast(msg, type='info') {
-  const c  = document.getElementById('toast-container');
-  const el = document.createElement('div');
-  el.className   = 'toast ' + type;
-  el.textContent = msg;
-  c.appendChild(el);
-  requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('show')));
-  setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 300); }, 2800);
-}
-
-// ═══════════════════════════════════════════════════════════════
-//  時鐘
-// ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
+//  時鐘 & 鍵盤
+// ═══════════════════════════════════════════════
 function tick() {
   const now = new Date();
   document.getElementById('live-clock').textContent = now.toLocaleTimeString('zh-TW');
   document.getElementById('date-chip').textContent  = now.toLocaleDateString('zh-TW',{year:'numeric',month:'long',day:'numeric',weekday:'short'});
 }
-
-// ═══════════════════════════════════════════════════════════════
-//  鍵盤
-// ═══════════════════════════════════════════════════════════════
 document.addEventListener('keydown', e => {
   if (e.target.id === 'new-emp'  && e.key === 'Enter') addEmp();
   if (e.target.id === 'new-todo' && e.key === 'Enter' && (e.ctrlKey || e.metaKey)) addTodo();
 });
 
-// ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 //  啟動
-// ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 tick();
 setInterval(tick, 1000);
-pullState();                        // 頁面載入時立即從 Sheet 拉資料
-setInterval(() => pullState(true), 8000);  // 每 8 秒靜默同步
+init();
 </script>
-
-<!--
-╔══════════════════════════════════════════════════════════════════╗
-║  Google Apps Script 完整程式碼（請完整替換並重新部署）           ║
-║  Sheet → 延伸功能 → Apps Script → 貼上 → 部署為網頁應用程式    ║
-║  執行身分：我　存取權限：所有人（包含匿名使用者）               ║
-╚══════════════════════════════════════════════════════════════════╝
-
-const SS_ID = SpreadsheetApp.getActiveSpreadsheet().getId();
-
-// ── doGet：JSONP 讀取（支援 callback 參數）─────────────────────
-function doGet(e) {
-  const p        = e.parameter || {};
-  const callback = p.callback  || '';
-  const action   = p.action    || '';
-
-  let result = { ok: true };
-  if (action === 'getAll') result = getAllData();
-
-  // 必須用 JSONP 格式回傳，讓 <script> 標籤能接收
-  const json   = JSON.stringify(result);
-  const output = callback
-    ? ContentService.createTextOutput(callback + '(' + json + ')')
-        .setMimeType(ContentService.MimeType.JAVASCRIPT)
-    : ContentService.createTextOutput(json)
-        .setMimeType(ContentService.MimeType.JSON);
-  return output;
-}
-
-// ── doPost：接收寫入操作（form-urlencoded）─────────────────────
-function doPost(e) {
-  const p      = e.parameter || {};
-  const action = p.action    || '';
-
-  if (action === 'addEmp')     handleAddEmp(p);
-  if (action === 'removeEmp')  handleRemoveEmp(p);
-  if (action === 'clockIn')    handleClockIn(p);
-  if (action === 'clockOut')   handleClockOut(p);
-  if (action === 'addTodo')    handleAddTodo(p);
-  if (action === 'toggleTodo') handleToggleTodo(p);
-  if (action === 'deleteTodo') handleDeleteTodo(p);
-
-  return ContentService.createTextOutput('ok');
-}
-
-// ── 讀取所有資料 ────────────────────────────────────────────────
-function getAllData() {
-  const ss    = SpreadsheetApp.openById(SS_ID);
-  const empSh = getOrCreate(ss, '員工');
-  const clkSh = getOrCreate(ss, '打卡');
-  const tdSh  = getOrCreate(ss, '代辦');
-  const today = fmtDate(new Date());
-
-  // 員工清單
-  const emps = getRows(empSh).map(r => r[0]).filter(Boolean);
-
-  // 今日打卡狀態
-  const states = {};
-  emps.forEach(n => { states[n] = { on: false, in: null, out: null }; });
-  getRows(clkSh).forEach(r => {
-    const name = r[0], d = toDateStr(r[1]), inT = r[2], outT = r[3];
-    if (d === today && states[name] !== undefined) {
-      states[name].in  = inT  || null;
-      states[name].out = outT || null;
-      states[name].on  = !!inT && !outT;
-    }
-  });
-
-  // 今日 Todos（未刪除）
-  const todos = getRows(tdSh)
-    .filter(r => toDateStr(r[0]) === today && !r[4])
-    .map(r => ({
-      id:   String(r[1]),
-      text: String(r[2]),
-      done: r[3] === true || String(r[3]) === 'true' || String(r[3]) === '1'
-    }));
-
-  return { emps, states, todos };
-}
-
-// ── 員工 ────────────────────────────────────────────────────────
-function handleAddEmp(p) {
-  const ss = SpreadsheetApp.openById(SS_ID);
-  const sh = getOrCreate(ss, '員工');
-  if (!sh.getLastRow()) sh.appendRow(['姓名']);
-  if (!getRows(sh).some(r => r[0] === p.name)) sh.appendRow([p.name]);
-}
-
-function handleRemoveEmp(p) {
-  const ss   = SpreadsheetApp.openById(SS_ID);
-  const sh   = getOrCreate(ss, '員工');
-  const data = sh.getDataRange().getValues();
-  for (let i = 1; i < data.length; i++) {
-    if (data[i][0] === p.name) { sh.deleteRow(i + 1); return; }
-  }
-}
-
-// ── 打卡 ────────────────────────────────────────────────────────
-function handleClockIn(p) {
-  const ss    = SpreadsheetApp.openById(SS_ID);
-  const sh    = getOrCreate(ss, '打卡');
-  if (!sh.getLastRow()) sh.appendRow(['姓名','日期','上班','下班']);
-  const today = fmtDate(new Date());
-  const data  = sh.getDataRange().getValues();
-  for (let i = 1; i < data.length; i++) {
-    if (data[i][0] === p.name && toDateStr(data[i][1]) === today) {
-      sh.getRange(i+1, 3).setValue(p.inTime);
-      sh.getRange(i+1, 4).setValue('');
-      return;
-    }
-  }
-  sh.appendRow([p.name, today, p.inTime, '']);
-}
-
-function handleClockOut(p) {
-  const ss    = SpreadsheetApp.openById(SS_ID);
-  const sh    = getOrCreate(ss, '打卡');
-  const today = fmtDate(new Date());
-  const data  = sh.getDataRange().getValues();
-  for (let i = 1; i < data.length; i++) {
-    if (data[i][0] === p.name && toDateStr(data[i][1]) === today) {
-      sh.getRange(i+1, 4).setValue(p.outTime);
-      return;
-    }
-  }
-  sh.appendRow([p.name, today, p.inTime || '', p.outTime]);
-}
-
-// ── 代辦 ────────────────────────────────────────────────────────
-function handleAddTodo(p) {
-  const ss  = SpreadsheetApp.openById(SS_ID);
-  const sh  = getOrCreate(ss, '代辦');
-  if (!sh.getLastRow()) sh.appendRow(['日期','ID','內容','完成','刪除']);
-  sh.appendRow([fmtDate(new Date()), p.id, p.text, false, '']);
-}
-
-function handleToggleTodo(p) {
-  const ss   = SpreadsheetApp.openById(SS_ID);
-  const sh   = getOrCreate(ss, '代辦');
-  const data = sh.getDataRange().getValues();
-  for (let i = 1; i < data.length; i++) {
-    if (String(data[i][1]) === String(p.id)) {
-      sh.getRange(i+1, 4).setValue(p.done === '1' || p.done === 'true');
-      return;
-    }
-  }
-}
-
-function handleDeleteTodo(p) {
-  const ss   = SpreadsheetApp.openById(SS_ID);
-  const sh   = getOrCreate(ss, '代辦');
-  const data = sh.getDataRange().getValues();
-  for (let i = 1; i < data.length; i++) {
-    if (String(data[i][1]) === String(p.id)) {
-      sh.getRange(i+1, 5).setValue('deleted');
-      return;
-    }
-  }
-}
-
-// ── 工具 ────────────────────────────────────────────────────────
-function getOrCreate(ss, name) {
-  return ss.getSheetByName(name) || ss.insertSheet(name);
-}
-function getRows(sh) {
-  const last = sh.getLastRow();
-  if (last < 2) return [];
-  return sh.getRange(2, 1, last - 1, Math.max(sh.getLastColumn(), 1)).getValues();
-}
-function fmtDate(d) {
-  return Utilities.formatDate(d, 'Asia/Taipei', 'yyyy/MM/dd');
-}
-function toDateStr(v) {
-  if (v instanceof Date) return fmtDate(v);
-  return String(v);
-}
--->
 </body>
 </html>
