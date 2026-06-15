@@ -455,24 +455,37 @@ async function removeEmp(name) {
   await save();
 }
 
+// ── 寫入 Google Sheet（fire-and-forget，用 no-cors 表單送出）──
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbyUTNmo9bAMfMgtrsNeX-yoDdG9pk30WNY6J-QiozGr-JEqs_7qas3-cO63-0t8YWT-Pg/exec';
+
+function writeToSheet(params) {
+  // 用 fetch no-cors：瀏覽器送出後不讀回應，Apps Script doGet 收到即寫入
+  const url = GAS_URL + '?' + new URLSearchParams(params).toString();
+  fetch(url, { method: 'GET', mode: 'no-cors' }).catch(() => {});
+}
+
 async function clockIn(name) {
   const t = nowTime(), d = todayKey();
+  const dateStr = new Date().toLocaleDateString('zh-TW');
   if (!data.clocks)    data.clocks    = {};
   if (!data.clocks[d]) data.clocks[d] = {};
   data.clocks[d][name] = { on: true, in: t, out: null };
   renderEmps();
   await save();
+  writeToSheet({ action: 'clockIn', name, date: dateStr, inTime: t });
   toast(name + '　上班打卡　' + t, 'success');
 }
 
 async function clockOut(name) {
   const t = nowTime(), d = todayKey();
+  const dateStr = new Date().toLocaleDateString('zh-TW');
   if (!data.clocks)    data.clocks    = {};
   if (!data.clocks[d]) data.clocks[d] = {};
   const prev = data.clocks[d][name] || {};
   data.clocks[d][name] = { on: false, in: prev.in || t, out: t };
   renderEmps();
   await save();
+  writeToSheet({ action: 'clockOut', name, date: dateStr, inTime: prev.in || t, outTime: t });
   toast(name + '　下班打卡　' + t, 'info');
 }
 
