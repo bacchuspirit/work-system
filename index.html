@@ -458,17 +458,20 @@ async function removeEmp(name) {
 // ── 寫入 Google Sheet ────────────────────────────────
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbyUTNmo9bAMfMgtrsNeX-yoDdG9pk30WNY6J-QiozGr-JEqs_7qas3-cO63-0t8YWT-Pg/exec';
 
-function writeToSheet(params) {
-  // <img> src ping：唯一能從靜態頁面無 CORS 觸發 Apps Script doGet 的方式
-  const url = GAS_URL + '?' + new URLSearchParams(params).toString();
+function pingSheet(name, inTime, outTime) {
+  const params = new URLSearchParams({ name, inTime, outTime });
+  const url    = GAS_URL + '?' + params.toString();
+
+  // 方法①：img ping（最常用）
   const img = new Image();
   img.src = url;
-  // 備援：iframe 方式，確保 redirect 後也能送達
-  const iframe = document.createElement('iframe');
-  iframe.style.display = 'none';
-  iframe.src = url;
-  document.body.appendChild(iframe);
-  setTimeout(() => iframe.remove(), 5000);
+
+  // 方法②：iframe（Apps Script redirect 後 img 有時失效，iframe 一定能到達）
+  const f = document.createElement('iframe');
+  f.style.cssText = 'display:none;width:0;height:0;border:0';
+  f.src = url;
+  document.body.appendChild(f);
+  setTimeout(() => { try { f.remove(); } catch(e){} }, 8000);
 }
 
 async function clockIn(name) {
@@ -478,8 +481,7 @@ async function clockIn(name) {
   data.clocks[d][name] = { on: true, in: t, out: null };
   renderEmps();
   await save();
-  // 上班：inTime 帶時間，outTime 空字串 → Sheet 寫入姓名/日期/上班時間/空
-  writeToSheet({ name, inTime: t, outTime: '' });
+  pingSheet(name, t, '');          // outTime 空 → Apps Script 判斷為上班
   toast(name + '　上班打卡　' + t, 'success');
 }
 
@@ -492,8 +494,7 @@ async function clockOut(name) {
   data.clocks[d][name] = { on: false, in: inT, out: t };
   renderEmps();
   await save();
-  // 下班：把上班時間也一起帶過去，Apps Script 找到列後只更新 D 欄
-  writeToSheet({ name, inTime: inT, outTime: t });
+  pingSheet(name, inT, t);         // inTime + outTime 都帶 → Apps Script 判斷為下班
   toast(name + '　下班打卡　' + t, 'info');
 }
 
