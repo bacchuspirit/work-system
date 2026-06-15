@@ -21,11 +21,7 @@
   body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text-1); min-height: 100vh; }
 
   /* TOPBAR */
-  .topbar {
-    background: var(--navy); padding: 0 28px; height: 60px;
-    display: flex; align-items: center; justify-content: space-between;
-    position: sticky; top: 0; z-index: 100;
-  }
+  .topbar { background: var(--navy); padding: 0 28px; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
   .topbar-left { display: flex; align-items: center; gap: 16px; }
   .logo { display: flex; align-items: center; gap: 9px; text-decoration: none; }
   .logo-icon { width: 30px; height: 30px; background: var(--mint); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
@@ -33,15 +29,10 @@
   .logo-name { font-size: 15px; font-weight: 600; color: #fff; letter-spacing: -0.3px; }
   .topbar-div { width: 1px; height: 20px; background: var(--navy-3); }
   .date-chip { font-size: 12px; color: rgba(255,255,255,0.5); }
-  .sync-pill {
-    font-size: 11px; font-family: 'DM Mono', monospace;
-    padding: 3px 9px; border-radius: 20px;
-    background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.45);
-    transition: background .3s, color .3s;
-  }
-  .sync-pill.ok     { background: rgba(0,196,140,0.18); color: var(--mint); }
-  .sync-pill.busy   { background: rgba(123,110,246,0.18); color: #a89df8; }
-  .sync-pill.error  { background: rgba(242,78,78,0.18); color: #f08080; }
+  .sync-pill { font-size: 11px; font-family: 'DM Mono', monospace; padding: 3px 9px; border-radius: 20px; background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.45); transition: background .3s, color .3s; }
+  .sync-pill.ok    { background: rgba(0,196,140,0.18); color: var(--mint); }
+  .sync-pill.busy  { background: rgba(123,110,246,0.18); color: #a89df8; }
+  .sync-pill.error { background: rgba(242,78,78,0.18); color: #f08080; }
   .clock-display { font-family: 'DM Mono', monospace; font-size: 20px; font-weight: 500; color: #fff; letter-spacing: 1px; }
   .clock-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--mint); margin-right: 8px; animation: pulse 2s ease-in-out infinite; vertical-align: middle; position: relative; top: -1px; }
   @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
@@ -62,12 +53,7 @@
 
   /* ADD ROW */
   .add-row { display: flex; gap: 7px; margin-bottom: 14px; }
-  .add-row input {
-    flex: 1; height: 38px; padding: 0 12px; font-size: 13px; font-family: 'Inter', sans-serif;
-    border: 1px solid var(--border); border-radius: var(--radius);
-    background: var(--bg); color: var(--text-1); outline: none;
-    transition: border-color .15s, background .15s;
-  }
+  .add-row input { flex: 1; height: 38px; padding: 0 12px; font-size: 13px; font-family: 'Inter', sans-serif; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text-1); outline: none; transition: border-color .15s, background .15s; }
   .add-row input:focus { border-color: var(--purple); background: var(--white); }
   .add-row input::placeholder { color: var(--text-3); }
   .btn-add { width: 38px; height: 38px; border: none; border-radius: var(--radius); background: var(--navy); color: #fff; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .15s; }
@@ -89,7 +75,7 @@
   .btn-remove { background: none; border: none; color: var(--text-3); cursor: pointer; font-size: 16px; line-height: 1; padding: 2px; flex-shrink: 0; transition: color .15s; }
   .btn-remove:hover { color: var(--coral); }
 
-  /* TODO TEXTAREA */
+  /* TODO */
   .todo-add-wrap { margin-bottom: 14px; }
   .todo-textarea { width: 100%; min-height: 64px; padding: 10px 12px; font-size: 13px; font-family: 'Inter', sans-serif; line-height: 1.6; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text-1); outline: none; resize: vertical; transition: border-color .15s, background .15s; }
   .todo-textarea:focus { border-color: var(--purple); background: var(--white); }
@@ -97,8 +83,6 @@
   .todo-add-btns { display: flex; justify-content: flex-end; margin-top: 6px; }
   .btn-add-todo { height: 32px; padding: 0 14px; border: none; border-radius: var(--radius); background: var(--navy); color: #fff; font-size: 12px; font-weight: 500; font-family: 'Inter', sans-serif; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: background .15s; }
   .btn-add-todo:hover { background: var(--navy-3); }
-
-  /* TODO */
   .todo-list { display: flex; flex-direction: column; gap: 6px; }
   .todo-item { display: flex; align-items: flex-start; gap: 10px; padding: 9px 12px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--bg); transition: opacity .2s; }
   .todo-item.done { opacity: .5; }
@@ -209,87 +193,135 @@
 <div class="toast-container" id="toast-container"></div>
 
 <script>
-// ══════════════════════════════════════════════
-//  Apps Script 端點（已內建，doGet 讀取、doPost 寫入）
-// ══════════════════════════════════════════════
-const API = 'https://script.google.com/macros/s/AKfycbyUTNmo9bAMfMgtrsNeX-yoDdG9pk30WNY6J-QiozGr-JEqs_7qas3-cO63-0t8YWT-Pg/exec';
-const POLL_MS = 6000;
+// ════════════════════════════════════════════════
+//  設定
+// ════════════════════════════════════════════════
+const API      = 'https://script.google.com/macros/s/AKfycbyUTNmo9bAMfMgtrsNeX-yoDdG9pk30WNY6J-QiozGr-JEqs_7qas3-cO63-0t8YWT-Pg/exec';
+const POLL_MS  = 7000;
+const LS_KEY   = 'wds_cache_v2';   // localStorage 快取鍵
 
-// ══════════════════════════════════════════════
-//  本地快取
-// ══════════════════════════════════════════════
+// ════════════════════════════════════════════════
+//  狀態
+// ════════════════════════════════════════════════
 const PALETTES = [
   ['#EEF0FF','#5A52D5'],['#E6F9F3','#009E70'],['#FFF0EC','#D84A1B'],
   ['#FFF5E6','#C47A15'],['#F9EEFF','#8B3FD4'],['#E8F5FF','#1A6FB8'],
   ['#FFEEF5','#C4306A'],['#F0FFF4','#276E3C']
 ];
-let emps   = [];
-let states = {};
-let todos  = [];
 
-// ══════════════════════════════════════════════
-//  Sync UI
-// ══════════════════════════════════════════════
+let emps   = [];
+let states = {};   // { name: { on, in, out } }
+let todos  = [];   // [{ id, text, done }]
+
+// ════════════════════════════════════════════════
+//  localStorage 快取 ── 讓重新整理後立即看到資料
+// ════════════════════════════════════════════════
+function saveCache() {
+  try {
+    localStorage.setItem(LS_KEY, JSON.stringify({ emps, states, todos, ts: Date.now() }));
+  } catch(e) {}
+}
+
+function loadCache() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (!raw) return false;
+    const d = JSON.parse(raw);
+    // 快取超過 24 小時就捨棄（跨日自動清空）
+    if (Date.now() - (d.ts || 0) > 86400000) {
+      localStorage.removeItem(LS_KEY);
+      return false;
+    }
+    emps   = d.emps   || [];
+    states = d.states || {};
+    todos  = d.todos  || [];
+    return true;
+  } catch(e) { return false; }
+}
+
+// ════════════════════════════════════════════════
+//  同步 UI
+// ════════════════════════════════════════════════
 function setSyncUI(state, msg) {
   const el = document.getElementById('sync-pill');
-  el.className = 'sync-pill ' + state;
+  el.className   = 'sync-pill ' + state;
   el.textContent = msg;
 }
 
-// ══════════════════════════════════════════════
-//  API 呼叫
-//  doGet  → 讀取全部狀態（帶 CORS header）
-//  doPost → 寫入操作（帶 CORS header）
-// ══════════════════════════════════════════════
+// ════════════════════════════════════════════════
+//  API：從 Google Sheet 拉取最新狀態
+// ════════════════════════════════════════════════
 async function pullState() {
   setSyncUI('busy', '⟳ 同步中');
   try {
     const res  = await fetch(API + '?action=getAll&t=' + Date.now());
     if (!res.ok) throw new Error(res.status);
     const data = await res.json();
-    if (data.emps)   { emps = data.emps; states = data.states || {}; renderEmps(); }
-    if (data.todos)  { todos = data.todos; renderTodos(); }
+
+    if (Array.isArray(data.emps)) {
+      emps   = data.emps;
+      states = data.states || {};
+    }
+    if (Array.isArray(data.todos)) {
+      todos = data.todos;
+    }
+
+    saveCache();          // ← 更新本地快取
+    renderEmps();
+    renderTodos();
     setSyncUI('ok', '● 已同步');
   } catch(e) {
     setSyncUI('error', '✕ 離線');
   }
 }
 
+// API：寫入操作 → doPost
 async function postAction(payload) {
   try {
     await fetch(API, {
-      method: 'POST',
+      method:  'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+      body:    JSON.stringify(payload)
     });
-    setTimeout(pullState, 600);
+    // 寫入後 800ms 再拉一次確保同步
+    setTimeout(pullState, 800);
   } catch(e) {
     setSyncUI('error', '✕ 離線');
   }
 }
 
-// ══════════════════════════════════════════════
-//  員工
-// ══════════════════════════════════════════════
+// ════════════════════════════════════════════════
+//  工具
+// ════════════════════════════════════════════════
+function esc(s) {
+  return String(s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function uid()     { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+function nowTime() { return new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); }
+function nowDate() { return new Date().toLocaleDateString('zh-TW'); }
 function initials(n) { return n.length >= 2 ? n.slice(-2) : n; }
-function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
-function uid() { return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
-function nowTime(){ return new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); }
-function nowDate(){ return new Date().toLocaleDateString('zh-TW'); }
 
+// ════════════════════════════════════════════════
+//  渲染：員工
+// ════════════════════════════════════════════════
 function renderEmps() {
   const list = document.getElementById('emp-list');
   list.innerHTML = '';
   let inCount = 0;
+
   emps.forEach((name, i) => {
     const s = states[name] || { on: false, in: null, out: null };
     if (s.on) inCount++;
     const [bg, fg] = PALETTES[i % PALETTES.length];
-    const row = document.createElement('div');
-    row.className = 'emp-row' + (s.on ? ' checked-in' : '');
+
     let timeStr = '尚未打卡', timeCls = '';
     if (s.on && s.in)  { timeStr = '上班中　' + s.in; timeCls = 'on'; }
     else if (s.in)     { timeStr = s.in + (s.out ? '　→　' + s.out : ''); }
+
+    const row = document.createElement('div');
+    row.className = 'emp-row' + (s.on ? ' checked-in' : '');
     row.innerHTML = `
       <div class="avatar" style="background:${bg};color:${fg}">${initials(name)}</div>
       <div class="emp-info">
@@ -299,61 +331,63 @@ function renderEmps() {
       ${s.on
         ? `<button class="btn-clock btn-out" onclick="clockOut('${esc(name)}')">
              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-             下班
-           </button>`
+             下班</button>`
         : `<button class="btn-clock btn-in" onclick="clockIn('${esc(name)}')">
              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-             上班
-           </button>`}
+             上班</button>`}
       <button class="btn-remove" onclick="removeEmp('${esc(name)}')" aria-label="移除">×</button>`;
     list.appendChild(row);
   });
+
   const badge = document.getElementById('in-badge');
   badge.textContent = inCount + ' 人上班中';
   badge.className   = 'pill' + (inCount > 0 ? ' active' : '');
 }
 
+// ════════════════════════════════════════════════
+//  員工操作
+// ════════════════════════════════════════════════
 function clockIn(name) {
   const t = nowTime(), d = nowDate();
-  if (!states[name]) states[name] = {};
   states[name] = { on: true, in: t, out: null };
-  renderEmps();
+  saveCache(); renderEmps();
   postAction({ action:'clockIn', name, date:d, inTime:t });
   toast(name + '　上班打卡　' + t, 'success');
 }
 function clockOut(name) {
   const t = nowTime(), d = nowDate();
-  if (!states[name]) states[name] = {};
-  const inT = states[name].in || '';
+  const inT = (states[name] || {}).in || '';
   states[name] = { on: false, in: inT, out: t };
-  renderEmps();
+  saveCache(); renderEmps();
   postAction({ action:'clockOut', name, date:d, inTime:inT, outTime:t });
   toast(name + '　下班打卡　' + t, 'info');
 }
 function addEmp() {
   const inp = document.getElementById('new-emp');
-  const n = inp.value.trim();
+  const n   = inp.value.trim();
   if (!n) return;
   if (emps.includes(n)) { toast('員工已存在', 'warn'); return; }
-  emps.push(n); renderEmps(); inp.value = '';
+  emps.push(n);
+  saveCache(); renderEmps(); inp.value = '';
   postAction({ action:'addEmp', name:n });
 }
 function removeEmp(name) {
   if (!confirm('確定移除「' + name + '」？')) return;
   emps = emps.filter(e => e !== name);
   delete states[name];
-  renderEmps();
+  saveCache(); renderEmps();
   postAction({ action:'removeEmp', name });
 }
 
-// ══════════════════════════════════════════════
-//  Todo
-// ══════════════════════════════════════════════
+// ════════════════════════════════════════════════
+//  渲染：Todo
+// ════════════════════════════════════════════════
 function renderTodos() {
-  const list = document.getElementById('todo-list');
+  const list  = document.getElementById('todo-list');
   list.innerHTML = '';
   const total = todos.length;
   const done  = todos.filter(t => t.done).length;
+
   if (!total) {
     list.innerHTML = '<div class="empty-hint">今天還沒有待辦事項</div>';
   } else {
@@ -367,6 +401,7 @@ function renderTodos() {
       list.appendChild(item);
     });
   }
+
   document.getElementById('todo-badge').textContent = total + ' 項';
   document.getElementById('todo-stat').textContent  = total ? done + ' / ' + total + ' 完成' : '';
   const pw = document.getElementById('progress-wrap');
@@ -378,25 +413,28 @@ function renderTodos() {
   }
 }
 
+// ════════════════════════════════════════════════
+//  Todo 操作
+// ════════════════════════════════════════════════
 function addTodo() {
-  const ta = document.getElementById('new-todo');
+  const ta  = document.getElementById('new-todo');
   const txt = ta.value.trim();
   if (!txt) return;
   const id = uid();
   todos.push({ id, text: txt, done: false });
-  renderTodos(); ta.value = '';
+  saveCache(); renderTodos(); ta.value = '';
   postAction({ action:'addTodo', id, text: txt });
 }
 function toggleTodo(id) {
   const t = todos.find(x => x.id === id);
   if (!t) return;
   t.done = !t.done;
-  renderTodos();
+  saveCache(); renderTodos();
   postAction({ action:'toggleTodo', id, done: t.done });
 }
 function delTodo(id) {
   todos = todos.filter(x => x.id !== id);
-  renderTodos();
+  saveCache(); renderTodos();
   postAction({ action:'deleteTodo', id });
 }
 function clearDone() {
@@ -404,142 +442,151 @@ function clearDone() {
   if (!confirm('確定清除所有已完成的事項？')) return;
   const ids = todos.filter(t => t.done).map(t => t.id);
   todos = todos.filter(t => !t.done);
-  renderTodos();
+  saveCache(); renderTodos();
   ids.forEach(id => postAction({ action:'deleteTodo', id }));
   toast('已清除完成項目', 'info');
 }
 
-// ══════════════════════════════════════════════
+// ════════════════════════════════════════════════
 //  Toast
-// ══════════════════════════════════════════════
+// ════════════════════════════════════════════════
 function toast(msg, type='info') {
-  const c = document.getElementById('toast-container');
+  const c  = document.getElementById('toast-container');
   const el = document.createElement('div');
-  el.className = 'toast ' + type;
+  el.className   = 'toast ' + type;
   el.textContent = msg;
   c.appendChild(el);
   requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('show')));
   setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 300); }, 2800);
 }
 
-// ══════════════════════════════════════════════
-//  Clock & keyboard
-// ══════════════════════════════════════════════
+// ════════════════════════════════════════════════
+//  時鐘
+// ════════════════════════════════════════════════
 function tick() {
   const now = new Date();
   document.getElementById('live-clock').textContent = now.toLocaleTimeString('zh-TW');
   document.getElementById('date-chip').textContent  = now.toLocaleDateString('zh-TW',{year:'numeric',month:'long',day:'numeric',weekday:'short'});
 }
+
+// ════════════════════════════════════════════════
+//  鍵盤
+// ════════════════════════════════════════════════
 document.addEventListener('keydown', e => {
   if (e.target.id === 'new-emp'  && e.key === 'Enter') addEmp();
   if (e.target.id === 'new-todo' && e.key === 'Enter' && (e.ctrlKey || e.metaKey)) addTodo();
 });
 
-tick(); setInterval(tick, 1000);
-pullState(); setInterval(pullState, POLL_MS);
+// ════════════════════════════════════════════════
+//  啟動：先從快取立即還原畫面，再從 Sheet 更新
+// ════════════════════════════════════════════════
+tick();
+setInterval(tick, 1000);
+
+// ① 從 localStorage 瞬間還原（< 1ms，不閃白）
+if (loadCache()) {
+  renderEmps();
+  renderTodos();
+}
+
+// ② 再從 Google Sheet 拉最新資料（會覆蓋快取）
+pullState();
+setInterval(pullState, POLL_MS);
 </script>
 
 <!--
-=================================================================
-  Google Apps Script 程式碼
-  請至 Google Sheet → 延伸功能 → Apps Script 貼上以下程式碼
-  部署為「網頁應用程式」，執行身分：我，存取權限：所有人
-=================================================================
+================================================================
+  Google Apps Script 程式碼（完整版）
+  Sheet → 延伸功能 → Apps Script → 貼上 → 部署為網頁應用程式
+  執行身分：我　存取權限：所有人（包含匿名）
+================================================================
 
 const SS_ID = SpreadsheetApp.getActiveSpreadsheet().getId();
 
 function doGet(e) {
   const action = (e.parameter || {}).action || '';
   if (action === 'getAll') {
-    return respond(getAllData());
+    return jsonResponse(getAllData());
   }
-  return respond({ ok: true });
+  return jsonResponse({ ok: true });
 }
 
 function doPost(e) {
   const payload = JSON.parse(e.postData.contents);
   const action  = payload.action || '';
 
-  if (action === 'addEmp')     addEmp(payload);
-  if (action === 'removeEmp')  removeEmp(payload);
-  if (action === 'clockIn')    clockIn(payload);
-  if (action === 'clockOut')   clockOut(payload);
-  if (action === 'addTodo')    addTodo(payload);
-  if (action === 'toggleTodo') toggleTodo(payload);
-  if (action === 'deleteTodo') deleteTodo(payload);
+  if (action === 'addEmp')     handleAddEmp(payload);
+  if (action === 'removeEmp')  handleRemoveEmp(payload);
+  if (action === 'clockIn')    handleClockIn(payload);
+  if (action === 'clockOut')   handleClockOut(payload);
+  if (action === 'addTodo')    handleAddTodo(payload);
+  if (action === 'toggleTodo') handleToggleTodo(payload);
+  if (action === 'deleteTodo') handleDeleteTodo(payload);
 
-  return respond({ ok: true });
+  return jsonResponse({ ok: true });
 }
 
-// ── 讀取所有狀態 ──
 function getAllData() {
-  const ss   = SpreadsheetApp.openById(SS_ID);
+  const ss     = SpreadsheetApp.openById(SS_ID);
   const empSh  = getOrCreate(ss, '員工');
   const clkSh  = getOrCreate(ss, '打卡');
   const tdSh   = getOrCreate(ss, '代辦');
+  const today  = fmtDate(new Date());
 
-  // 員工清單
-  const empRows = getRows(empSh);
-  const emps    = empRows.map(r => r[0]).filter(Boolean);
+  const emps = getRows(empSh).map(r => r[0]).filter(Boolean);
 
-  // 今日打卡
-  const today  = Utilities.formatDate(new Date(), 'Asia/Taipei', 'yyyy/MM/dd');
-  const clkRows= getRows(clkSh);
   const states = {};
   emps.forEach(n => { states[n] = { on: false, in: null, out: null }; });
-  clkRows.forEach(r => {
+  getRows(clkSh).forEach(r => {
     const [name, date, inT, outT] = r;
-    const dateStr = date instanceof Date
-      ? Utilities.formatDate(date, 'Asia/Taipei', 'yyyy/MM/dd')
-      : String(date);
-    if (dateStr === today && states[name] !== undefined) {
+    const d = date instanceof Date ? fmtDate(date) : String(date);
+    if (d === today && states[name] !== undefined) {
       states[name].in  = inT  || null;
       states[name].out = outT || null;
       states[name].on  = !!inT && !outT;
     }
   });
 
-  // 今日 Todos（未刪除）
-  const tdRows = getRows(tdSh);
-  const todos  = tdRows
+  const todos = getRows(tdSh)
     .filter(r => {
-      const d = r[0] instanceof Date
-        ? Utilities.formatDate(r[0], 'Asia/Taipei', 'yyyy/MM/dd')
-        : String(r[0]);
+      const d = r[0] instanceof Date ? fmtDate(r[0]) : String(r[0]);
       return d === today && !r[4];
     })
-    .map(r => ({ id: String(r[1]), text: String(r[2]), done: r[3] === true || r[3] === 'true' || r[3] === '1' }));
+    .map(r => ({
+      id:   String(r[1]),
+      text: String(r[2]),
+      done: r[3] === true || r[3] === 'true' || r[3] === '1'
+    }));
 
   return { emps, states, todos };
 }
 
-// ── 員工操作 ──
-function addEmp(p) {
+function handleAddEmp(p) {
   const ss = SpreadsheetApp.openById(SS_ID);
   const sh = getOrCreate(ss, '員工');
   if (!sh.getLastRow()) sh.appendRow(['姓名']);
   const rows = getRows(sh);
   if (!rows.some(r => r[0] === p.name)) sh.appendRow([p.name]);
 }
-function removeEmp(p) {
-  const ss = SpreadsheetApp.openById(SS_ID);
-  const sh = getOrCreate(ss, '員工');
+
+function handleRemoveEmp(p) {
+  const ss   = SpreadsheetApp.openById(SS_ID);
+  const sh   = getOrCreate(ss, '員工');
   const data = sh.getDataRange().getValues();
   for (let i = 1; i < data.length; i++) {
-    if (data[i][0] === p.name) { sh.deleteRow(i + 1); break; }
+    if (data[i][0] === p.name) { sh.deleteRow(i + 1); return; }
   }
 }
-function clockIn(p) {
-  const ss = SpreadsheetApp.openById(SS_ID);
-  const sh = getOrCreate(ss, '打卡');
+
+function handleClockIn(p) {
+  const ss    = SpreadsheetApp.openById(SS_ID);
+  const sh    = getOrCreate(ss, '打卡');
   if (!sh.getLastRow()) sh.appendRow(['姓名','日期','上班','下班']);
-  const today = Utilities.formatDate(new Date(), 'Asia/Taipei', 'yyyy/MM/dd');
+  const today = fmtDate(new Date());
   const data  = sh.getDataRange().getValues();
   for (let i = 1; i < data.length; i++) {
-    const rowDate = data[i][1] instanceof Date
-      ? Utilities.formatDate(data[i][1], 'Asia/Taipei', 'yyyy/MM/dd')
-      : String(data[i][1]);
-    if (data[i][0] === p.name && rowDate === today) {
+    const d = data[i][1] instanceof Date ? fmtDate(data[i][1]) : String(data[i][1]);
+    if (data[i][0] === p.name && d === today) {
       sh.getRange(i+1,3).setValue(p.inTime);
       sh.getRange(i+1,4).setValue('');
       return;
@@ -547,16 +594,15 @@ function clockIn(p) {
   }
   sh.appendRow([p.name, today, p.inTime, '']);
 }
-function clockOut(p) {
-  const ss = SpreadsheetApp.openById(SS_ID);
-  const sh = getOrCreate(ss, '打卡');
-  const today = Utilities.formatDate(new Date(), 'Asia/Taipei', 'yyyy/MM/dd');
+
+function handleClockOut(p) {
+  const ss    = SpreadsheetApp.openById(SS_ID);
+  const sh    = getOrCreate(ss, '打卡');
+  const today = fmtDate(new Date());
   const data  = sh.getDataRange().getValues();
   for (let i = 1; i < data.length; i++) {
-    const rowDate = data[i][1] instanceof Date
-      ? Utilities.formatDate(data[i][1], 'Asia/Taipei', 'yyyy/MM/dd')
-      : String(data[i][1]);
-    if (data[i][0] === p.name && rowDate === today) {
+    const d = data[i][1] instanceof Date ? fmtDate(data[i][1]) : String(data[i][1]);
+    if (data[i][0] === p.name && d === today) {
       sh.getRange(i+1,4).setValue(p.outTime);
       return;
     }
@@ -564,53 +610,56 @@ function clockOut(p) {
   sh.appendRow([p.name, today, p.inTime || '', p.outTime]);
 }
 
-// ── Todo 操作 ──
-function addTodo(p) {
-  const ss = SpreadsheetApp.openById(SS_ID);
-  const sh = getOrCreate(ss, '代辦');
+function handleAddTodo(p) {
+  const ss    = SpreadsheetApp.openById(SS_ID);
+  const sh    = getOrCreate(ss, '代辦');
   if (!sh.getLastRow()) sh.appendRow(['日期','ID','內容','完成','刪除']);
-  const today = Utilities.formatDate(new Date(), 'Asia/Taipei', 'yyyy/MM/dd');
+  const today = fmtDate(new Date());
   sh.appendRow([today, p.id, p.text, false, '']);
 }
-function toggleTodo(p) {
-  const ss = SpreadsheetApp.openById(SS_ID);
-  const sh = getOrCreate(ss, '代辦');
+
+function handleToggleTodo(p) {
+  const ss   = SpreadsheetApp.openById(SS_ID);
+  const sh   = getOrCreate(ss, '代辦');
   const data = sh.getDataRange().getValues();
   for (let i = 1; i < data.length; i++) {
     if (String(data[i][1]) === String(p.id)) {
       sh.getRange(i+1,4).setValue(p.done === true || p.done === 'true');
-      break;
-    }
-  }
-}
-function deleteTodo(p) {
-  const ss = SpreadsheetApp.openById(SS_ID);
-  const sh = getOrCreate(ss, '代辦');
-  const data = sh.getDataRange().getValues();
-  for (let i = 1; i < data.length; i++) {
-    if (String(data[i][1]) === String(p.id)) {
-      sh.getRange(i+1,5).setValue('deleted');
-      break;
+      return;
     }
   }
 }
 
-// ── 工具 ──
+function handleDeleteTodo(p) {
+  const ss   = SpreadsheetApp.openById(SS_ID);
+  const sh   = getOrCreate(ss, '代辦');
+  const data = sh.getDataRange().getValues();
+  for (let i = 1; i < data.length; i++) {
+    if (String(data[i][1]) === String(p.id)) {
+      sh.getRange(i+1,5).setValue('deleted');
+      return;
+    }
+  }
+}
+
 function getOrCreate(ss, name) {
   return ss.getSheetByName(name) || ss.insertSheet(name);
 }
 function getRows(sh) {
   const last = sh.getLastRow();
   if (last < 2) return [];
-  return sh.getRange(2, 1, last - 1, sh.getLastColumn()).getValues();
+  return sh.getRange(2, 1, last - 1, sh.getLastColumn() || 1).getValues();
 }
-function respond(data) {
-  const output = ContentService.createTextOutput(JSON.stringify(data))
+function fmtDate(d) {
+  return Utilities.formatDate(d, 'Asia/Taipei', 'yyyy/MM/dd');
+}
+function jsonResponse(data) {
+  return ContentService
+    .createTextOutput(JSON.stringify(data))
     .setMimeType(ContentService.MimeType.JSON);
-  return output;
 }
 
-=================================================================
+================================================================
 -->
 </body>
 </html>
