@@ -455,38 +455,45 @@ async function removeEmp(name) {
   await save();
 }
 
-// ── 寫入 Google Sheet（fire-and-forget，用 no-cors 表單送出）──
+// ── 寫入 Google Sheet ────────────────────────────────
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbyUTNmo9bAMfMgtrsNeX-yoDdG9pk30WNY6J-QiozGr-JEqs_7qas3-cO63-0t8YWT-Pg/exec';
 
 function writeToSheet(params) {
-  // <img> src 觸發 GET：完全繞過 CORS，Apps Script doGet 正常收到
+  // <img> src ping：唯一能從靜態頁面無 CORS 觸發 Apps Script doGet 的方式
   const url = GAS_URL + '?' + new URLSearchParams(params).toString();
   const img = new Image();
   img.src = url;
+  // 備援：iframe 方式，確保 redirect 後也能送達
+  const iframe = document.createElement('iframe');
+  iframe.style.display = 'none';
+  iframe.src = url;
+  document.body.appendChild(iframe);
+  setTimeout(() => iframe.remove(), 5000);
 }
 
 async function clockIn(name) {
   const t = nowTime(), d = todayKey();
-  const dateStr = new Date().toLocaleDateString('zh-TW');
   if (!data.clocks)    data.clocks    = {};
   if (!data.clocks[d]) data.clocks[d] = {};
   data.clocks[d][name] = { on: true, in: t, out: null };
   renderEmps();
   await save();
-  writeToSheet({ action: 'clockIn', name, inTime: t });
+  // 上班：inTime 帶時間，outTime 空字串 → Sheet 寫入姓名/日期/上班時間/空
+  writeToSheet({ name, inTime: t, outTime: '' });
   toast(name + '　上班打卡　' + t, 'success');
 }
 
 async function clockOut(name) {
   const t = nowTime(), d = todayKey();
-  const dateStr = new Date().toLocaleDateString('zh-TW');
   if (!data.clocks)    data.clocks    = {};
   if (!data.clocks[d]) data.clocks[d] = {};
   const prev = data.clocks[d][name] || {};
-  data.clocks[d][name] = { on: false, in: prev.in || t, out: t };
+  const inT  = prev.in || t;
+  data.clocks[d][name] = { on: false, in: inT, out: t };
   renderEmps();
   await save();
-  writeToSheet({ action: 'clockOut', name, inTime: prev.in || t, outTime: t });
+  // 下班：把上班時間也一起帶過去，Apps Script 找到列後只更新 D 欄
+  writeToSheet({ name, inTime: inT, outTime: t });
   toast(name + '　下班打卡　' + t, 'info');
 }
 
