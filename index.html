@@ -20,7 +20,6 @@
   }
   body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text-1); min-height: 100vh; }
 
-  /* TOPBAR */
   .topbar { background: var(--navy); padding: 0 28px; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
   .topbar-left { display: flex; align-items: center; gap: 16px; }
   .logo { display: flex; align-items: center; gap: 9px; text-decoration: none; }
@@ -29,20 +28,18 @@
   .logo-name { font-size: 15px; font-weight: 600; color: #fff; letter-spacing: -0.3px; }
   .topbar-div { width: 1px; height: 20px; background: var(--navy-3); }
   .date-chip { font-size: 12px; color: rgba(255,255,255,0.5); }
-  .sync-pill { font-size: 11px; font-family: 'DM Mono', monospace; padding: 3px 9px; border-radius: 20px; background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.45); transition: background .3s, color .3s; }
-  .sync-pill.ok    { background: rgba(0,196,140,0.18); color: var(--mint); }
-  .sync-pill.busy  { background: rgba(123,110,246,0.18); color: #a89df8; }
-  .sync-pill.error { background: rgba(242,78,78,0.18); color: #f08080; }
+  .sync-pill { font-size: 11px; font-family: 'DM Mono', monospace; padding: 3px 10px; border-radius: 20px; background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.45); transition: all .3s; white-space: nowrap; }
+  .sync-pill.ok    { background: rgba(0,196,140,0.2); color: var(--mint); }
+  .sync-pill.busy  { background: rgba(123,110,246,0.2); color: #a89df8; }
+  .sync-pill.error { background: rgba(242,78,78,0.2); color: #f08080; }
   .clock-display { font-family: 'DM Mono', monospace; font-size: 20px; font-weight: 500; color: #fff; letter-spacing: 1px; }
   .clock-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--mint); margin-right: 8px; animation: pulse 2s ease-in-out infinite; vertical-align: middle; position: relative; top: -1px; }
   @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
 
-  /* LAYOUT */
   .main { max-width: 1060px; margin: 0 auto; padding: 28px 24px 60px; }
   .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
   @media(max-width:720px){ .grid{grid-template-columns:1fr} .topbar{padding:0 16px} .main{padding:20px 16px 60px} }
 
-  /* CARD */
   .card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
   .card-head { padding: 18px 20px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
   .card-title { font-size: 13px; font-weight: 600; color: var(--text-1); letter-spacing: .4px; text-transform: uppercase; display: flex; align-items: center; gap: 7px; }
@@ -51,7 +48,6 @@
   .pill.active { background: var(--mint-lt); color: var(--mint-dk); }
   .card-body { padding: 16px 20px 20px; }
 
-  /* ADD ROW */
   .add-row { display: flex; gap: 7px; margin-bottom: 14px; }
   .add-row input { flex: 1; height: 38px; padding: 0 12px; font-size: 13px; font-family: 'Inter', sans-serif; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text-1); outline: none; transition: border-color .15s, background .15s; }
   .add-row input:focus { border-color: var(--purple); background: var(--white); }
@@ -59,7 +55,6 @@
   .btn-add { width: 38px; height: 38px; border: none; border-radius: var(--radius); background: var(--navy); color: #fff; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .15s; }
   .btn-add:hover { background: var(--navy-3); }
 
-  /* EMP */
   .emp-list { display: flex; flex-direction: column; gap: 8px; }
   .emp-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--bg); transition: border-color .2s, background .2s; }
   .emp-row.checked-in { border-color: #b2ecd8; background: var(--mint-lt); }
@@ -75,7 +70,6 @@
   .btn-remove { background: none; border: none; color: var(--text-3); cursor: pointer; font-size: 16px; line-height: 1; padding: 2px; flex-shrink: 0; transition: color .15s; }
   .btn-remove:hover { color: var(--coral); }
 
-  /* TODO */
   .todo-add-wrap { margin-bottom: 14px; }
   .todo-textarea { width: 100%; min-height: 64px; padding: 10px 12px; font-size: 13px; font-family: 'Inter', sans-serif; line-height: 1.6; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text-1); outline: none; resize: vertical; transition: border-color .15s, background .15s; }
   .todo-textarea:focus { border-color: var(--purple); background: var(--white); }
@@ -83,6 +77,7 @@
   .todo-add-btns { display: flex; justify-content: flex-end; margin-top: 6px; }
   .btn-add-todo { height: 32px; padding: 0 14px; border: none; border-radius: var(--radius); background: var(--navy); color: #fff; font-size: 12px; font-weight: 500; font-family: 'Inter', sans-serif; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: background .15s; }
   .btn-add-todo:hover { background: var(--navy-3); }
+
   .todo-list { display: flex; flex-direction: column; gap: 6px; }
   .todo-item { display: flex; align-items: flex-start; gap: 10px; padding: 9px 12px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--bg); transition: opacity .2s; }
   .todo-item.done { opacity: .5; }
@@ -101,13 +96,11 @@
   .btn-clear:hover { background: var(--coral-lt); border-color: #f9b0b0; color: var(--coral); }
   .empty-hint { text-align: center; padding: 24px 0; font-size: 13px; color: var(--text-3); }
 
-  /* PROGRESS */
   .progress-wrap { margin-top: 10px; }
   .progress-label { font-size: 11px; color: var(--text-3); margin-bottom: 5px; display: flex; justify-content: space-between; }
   .progress-bar { height: 4px; background: var(--bg-2); border-radius: 2px; overflow: hidden; }
   .progress-fill { height: 100%; background: var(--mint); border-radius: 2px; transition: width .4s ease; }
 
-  /* TOAST */
   .toast-container { position: fixed; bottom: 28px; right: 28px; display: flex; flex-direction: column; gap: 8px; z-index: 9999; pointer-events: none; }
   .toast { background: var(--navy); color: #fff; font-size: 13px; padding: 10px 16px; border-radius: var(--radius); opacity: 0; transform: translateY(8px); transition: opacity .25s, transform .25s; max-width: 300px; }
   .toast.show { opacity: 1; transform: translateY(0); }
@@ -128,7 +121,7 @@
     </a>
     <div class="topbar-div"></div>
     <span class="date-chip" id="date-chip"></span>
-    <span class="sync-pill" id="sync-pill">● 連線中</span>
+    <span class="sync-pill busy" id="sync-pill">⟳ 載入中</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <span class="clock-dot"></span>
@@ -151,7 +144,7 @@
           <input type="text" id="new-emp" placeholder="輸入員工姓名新增…" />
           <button class="btn-add" onclick="addEmp()" aria-label="新增">+</button>
         </div>
-        <div class="emp-list" id="emp-list"></div>
+        <div class="emp-list" id="emp-list"><div class="empty-hint">載入中…</div></div>
       </div>
     </div>
 
@@ -173,7 +166,7 @@
             </button>
           </div>
         </div>
-        <div id="todo-list" class="todo-list"></div>
+        <div id="todo-list" class="todo-list"><div class="empty-hint">載入中…</div></div>
         <div class="progress-wrap" id="progress-wrap" style="display:none">
           <div class="progress-label"><span>完成進度</span><span id="progress-pct">0%</span></div>
           <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
@@ -193,16 +186,14 @@
 <div class="toast-container" id="toast-container"></div>
 
 <script>
-// ════════════════════════════════════════════════
-//  設定
-// ════════════════════════════════════════════════
-const API      = 'https://script.google.com/macros/s/AKfycbyUTNmo9bAMfMgtrsNeX-yoDdG9pk30WNY6J-QiozGr-JEqs_7qas3-cO63-0t8YWT-Pg/exec';
-const POLL_MS  = 7000;
-const LS_KEY   = 'wds_cache_v2';   // localStorage 快取鍵
+// ═══════════════════════════════════════════════════════════════
+//  ★ 唯一需要修改的地方：貼上你的 Apps Script 部署網址
+// ═══════════════════════════════════════════════════════════════
+const API = 'https://script.google.com/macros/s/AKfycbyUTNmo9bAMfMgtrsNeX-yoDdG9pk30WNY6J-QiozGr-JEqs_7qas3-cO63-0t8YWT-Pg/exec';
 
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 //  狀態
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 const PALETTES = [
   ['#EEF0FF','#5A52D5'],['#E6F9F3','#009E70'],['#FFF0EC','#D84A1B'],
   ['#FFF5E6','#C47A15'],['#F9EEFF','#8B3FD4'],['#E8F5FF','#1A6FB8'],
@@ -210,106 +201,115 @@ const PALETTES = [
 ];
 
 let emps   = [];
-let states = {};   // { name: { on, in, out } }
-let todos  = [];   // [{ id, text, done }]
+let states = {};
+let todos  = [];
+let pollTimer = null;
 
-// ════════════════════════════════════════════════
-//  localStorage 快取 ── 讓重新整理後立即看到資料
-// ════════════════════════════════════════════════
-function saveCache() {
-  try {
-    localStorage.setItem(LS_KEY, JSON.stringify({ emps, states, todos, ts: Date.now() }));
-  } catch(e) {}
+// ═══════════════════════════════════════════════════════════════
+//  JSONP 讀取（唯一能繞過 CORS 的純前端方式）
+// ═══════════════════════════════════════════════════════════════
+let _cbIdx = 0;
+
+function jsonp(extraParams) {
+  return new Promise((resolve, reject) => {
+    const cbName = '__cb' + (++_cbIdx);
+    const timeout = setTimeout(() => {
+      delete window[cbName];
+      const s = document.getElementById('_jsonp_' + cbName);
+      if (s) s.remove();
+      reject(new Error('timeout'));
+    }, 12000);
+
+    window[cbName] = function(data) {
+      clearTimeout(timeout);
+      delete window[cbName];
+      const s = document.getElementById('_jsonp_' + cbName);
+      if (s) s.remove();
+      resolve(data);
+    };
+
+    const params = new URLSearchParams({ ...extraParams, callback: cbName, t: Date.now() });
+    const script = document.createElement('script');
+    script.id  = '_jsonp_' + cbName;
+    script.src = API + '?' + params.toString();
+    script.onerror = () => {
+      clearTimeout(timeout);
+      delete window[cbName];
+      script.remove();
+      reject(new Error('script error'));
+    };
+    document.head.appendChild(script);
+  });
 }
 
-function loadCache() {
-  try {
-    const raw = localStorage.getItem(LS_KEY);
-    if (!raw) return false;
-    const d = JSON.parse(raw);
-    // 快取超過 24 小時就捨棄（跨日自動清空）
-    if (Date.now() - (d.ts || 0) > 86400000) {
-      localStorage.removeItem(LS_KEY);
-      return false;
-    }
-    emps   = d.emps   || [];
-    states = d.states || {};
-    todos  = d.todos  || [];
-    return true;
-  } catch(e) { return false; }
+// ═══════════════════════════════════════════════════════════════
+//  POST 寫入（使用 no-cors fetch，Apps Script 會收到並處理）
+// ═══════════════════════════════════════════════════════════════
+function apiPost(params) {
+  // 用 form-urlencoded + no-cors，Apps Script doPost 可以從 e.parameter 讀到
+  const body = new URLSearchParams(params).toString();
+  return fetch(API, {
+    method: 'POST',
+    mode:   'no-cors',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body
+  }).catch(() => {});
 }
 
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 //  同步 UI
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 function setSyncUI(state, msg) {
   const el = document.getElementById('sync-pill');
   el.className   = 'sync-pill ' + state;
   el.textContent = msg;
 }
 
-// ════════════════════════════════════════════════
-//  API：從 Google Sheet 拉取最新狀態
-// ════════════════════════════════════════════════
-async function pullState() {
-  setSyncUI('busy', '⟳ 同步中');
+// ═══════════════════════════════════════════════════════════════
+//  拉取所有資料（JSONP）
+// ═══════════════════════════════════════════════════════════════
+async function pullState(silent) {
+  if (!silent) setSyncUI('busy', '⟳ 同步中');
   try {
-    const res  = await fetch(API + '?action=getAll&t=' + Date.now());
-    if (!res.ok) throw new Error(res.status);
-    const data = await res.json();
-
-    if (Array.isArray(data.emps)) {
-      emps   = data.emps;
-      states = data.states || {};
-    }
-    if (Array.isArray(data.todos)) {
-      todos = data.todos;
-    }
-
-    saveCache();          // ← 更新本地快取
-    renderEmps();
-    renderTodos();
+    const data = await jsonp({ action: 'getAll' });
+    if (data.emps)  { emps = data.emps; states = data.states || {}; renderEmps(); }
+    if (data.todos) { todos = data.todos; renderTodos(); }
     setSyncUI('ok', '● 已同步');
   } catch(e) {
-    setSyncUI('error', '✕ 離線');
+    setSyncUI('error', '✕ 無法連線');
   }
 }
 
-// API：寫入操作 → doPost
-async function postAction(payload) {
-  try {
-    await fetch(API, {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify(payload)
-    });
-    // 寫入後 800ms 再拉一次確保同步
-    setTimeout(pullState, 800);
-  } catch(e) {
-    setSyncUI('error', '✕ 離線');
-  }
+// 寫入後等 1.2 秒再 pull，給 Sheet 處理時間
+function pullAfterWrite() {
+  setTimeout(() => pullState(true), 1200);
 }
 
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 //  工具
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 function esc(s) {
-  return String(s)
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 function uid()     { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
 function nowTime() { return new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); }
 function nowDate() { return new Date().toLocaleDateString('zh-TW'); }
 function initials(n) { return n.length >= 2 ? n.slice(-2) : n; }
 
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 //  渲染：員工
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 function renderEmps() {
   const list = document.getElementById('emp-list');
   list.innerHTML = '';
   let inCount = 0;
+
+  if (!emps.length) {
+    list.innerHTML = '<div class="empty-hint">尚未新增員工</div>';
+    document.getElementById('in-badge').textContent = '0 人上班中';
+    document.getElementById('in-badge').className   = 'pill';
+    return;
+  }
 
   emps.forEach((name, i) => {
     const s = states[name] || { on: false, in: null, out: null };
@@ -344,44 +344,52 @@ function renderEmps() {
   badge.className   = 'pill' + (inCount > 0 ? ' active' : '');
 }
 
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 //  員工操作
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 function clockIn(name) {
   const t = nowTime(), d = nowDate();
   states[name] = { on: true, in: t, out: null };
-  saveCache(); renderEmps();
-  postAction({ action:'clockIn', name, date:d, inTime:t });
+  renderEmps();
+  apiPost({ action:'clockIn', name, date:d, inTime:t });
+  pullAfterWrite();
   toast(name + '　上班打卡　' + t, 'success');
 }
+
 function clockOut(name) {
   const t = nowTime(), d = nowDate();
   const inT = (states[name] || {}).in || '';
   states[name] = { on: false, in: inT, out: t };
-  saveCache(); renderEmps();
-  postAction({ action:'clockOut', name, date:d, inTime:inT, outTime:t });
+  renderEmps();
+  apiPost({ action:'clockOut', name, date:d, inTime:inT, outTime:t });
+  pullAfterWrite();
   toast(name + '　下班打卡　' + t, 'info');
 }
+
 function addEmp() {
   const inp = document.getElementById('new-emp');
   const n   = inp.value.trim();
   if (!n) return;
   if (emps.includes(n)) { toast('員工已存在', 'warn'); return; }
   emps.push(n);
-  saveCache(); renderEmps(); inp.value = '';
-  postAction({ action:'addEmp', name:n });
+  renderEmps();
+  inp.value = '';
+  apiPost({ action:'addEmp', name:n });
+  pullAfterWrite();
 }
+
 function removeEmp(name) {
   if (!confirm('確定移除「' + name + '」？')) return;
   emps = emps.filter(e => e !== name);
   delete states[name];
-  saveCache(); renderEmps();
-  postAction({ action:'removeEmp', name });
+  renderEmps();
+  apiPost({ action:'removeEmp', name });
+  pullAfterWrite();
 }
 
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 //  渲染：Todo
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 function renderTodos() {
   const list  = document.getElementById('todo-list');
   list.innerHTML = '';
@@ -395,9 +403,9 @@ function renderTodos() {
       const item = document.createElement('div');
       item.className = 'todo-item' + (t.done ? ' done' : '');
       item.innerHTML = `
-        <button class="check-btn ${t.done?'checked':''}" onclick="toggleTodo('${esc(t.id)}')" aria-label="切換完成"></button>
+        <button class="check-btn ${t.done?'checked':''}" onclick="toggleTodo('${esc(String(t.id))}')" aria-label="切換完成"></button>
         <span class="todo-text ${t.done?'done':''}">${esc(t.text)}</span>
-        <button class="btn-del" onclick="delTodo('${esc(t.id)}')" aria-label="刪除">×</button>`;
+        <button class="btn-del" onclick="delTodo('${esc(String(t.id))}')" aria-label="刪除">×</button>`;
       list.appendChild(item);
     });
   }
@@ -413,43 +421,50 @@ function renderTodos() {
   }
 }
 
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 //  Todo 操作
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 function addTodo() {
   const ta  = document.getElementById('new-todo');
   const txt = ta.value.trim();
   if (!txt) return;
   const id = uid();
   todos.push({ id, text: txt, done: false });
-  saveCache(); renderTodos(); ta.value = '';
-  postAction({ action:'addTodo', id, text: txt });
+  renderTodos();
+  ta.value = '';
+  apiPost({ action:'addTodo', id, text: txt });
+  pullAfterWrite();
 }
+
 function toggleTodo(id) {
   const t = todos.find(x => x.id === id);
   if (!t) return;
   t.done = !t.done;
-  saveCache(); renderTodos();
-  postAction({ action:'toggleTodo', id, done: t.done });
+  renderTodos();
+  apiPost({ action:'toggleTodo', id, done: t.done ? '1' : '0' });
+  pullAfterWrite();
 }
+
 function delTodo(id) {
   todos = todos.filter(x => x.id !== id);
-  saveCache(); renderTodos();
-  postAction({ action:'deleteTodo', id });
+  renderTodos();
+  apiPost({ action:'deleteTodo', id });
 }
+
 function clearDone() {
   if (!todos.some(t => t.done)) { toast('沒有已完成的事項', 'warn'); return; }
   if (!confirm('確定清除所有已完成的事項？')) return;
   const ids = todos.filter(t => t.done).map(t => t.id);
   todos = todos.filter(t => !t.done);
-  saveCache(); renderTodos();
-  ids.forEach(id => postAction({ action:'deleteTodo', id }));
+  renderTodos();
+  ids.forEach(id => apiPost({ action:'deleteTodo', id }));
+  pullAfterWrite();
   toast('已清除完成項目', 'info');
 }
 
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 //  Toast
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 function toast(msg, type='info') {
   const c  = document.getElementById('toast-container');
   const el = document.createElement('div');
@@ -460,86 +475,92 @@ function toast(msg, type='info') {
   setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 300); }, 2800);
 }
 
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 //  時鐘
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 function tick() {
   const now = new Date();
   document.getElementById('live-clock').textContent = now.toLocaleTimeString('zh-TW');
   document.getElementById('date-chip').textContent  = now.toLocaleDateString('zh-TW',{year:'numeric',month:'long',day:'numeric',weekday:'short'});
 }
 
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 //  鍵盤
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 document.addEventListener('keydown', e => {
   if (e.target.id === 'new-emp'  && e.key === 'Enter') addEmp();
   if (e.target.id === 'new-todo' && e.key === 'Enter' && (e.ctrlKey || e.metaKey)) addTodo();
 });
 
-// ════════════════════════════════════════════════
-//  啟動：先從快取立即還原畫面，再從 Sheet 更新
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
+//  啟動
+// ═══════════════════════════════════════════════════════════════
 tick();
 setInterval(tick, 1000);
-
-// ① 從 localStorage 瞬間還原（< 1ms，不閃白）
-if (loadCache()) {
-  renderEmps();
-  renderTodos();
-}
-
-// ② 再從 Google Sheet 拉最新資料（會覆蓋快取）
-pullState();
-setInterval(pullState, POLL_MS);
+pullState();                        // 頁面載入時立即從 Sheet 拉資料
+setInterval(() => pullState(true), 8000);  // 每 8 秒靜默同步
 </script>
 
 <!--
-================================================================
-  Google Apps Script 程式碼（完整版）
-  Sheet → 延伸功能 → Apps Script → 貼上 → 部署為網頁應用程式
-  執行身分：我　存取權限：所有人（包含匿名）
-================================================================
+╔══════════════════════════════════════════════════════════════════╗
+║  Google Apps Script 完整程式碼（請完整替換並重新部署）           ║
+║  Sheet → 延伸功能 → Apps Script → 貼上 → 部署為網頁應用程式    ║
+║  執行身分：我　存取權限：所有人（包含匿名使用者）               ║
+╚══════════════════════════════════════════════════════════════════╝
 
 const SS_ID = SpreadsheetApp.getActiveSpreadsheet().getId();
 
+// ── doGet：JSONP 讀取（支援 callback 參數）─────────────────────
 function doGet(e) {
-  const action = (e.parameter || {}).action || '';
-  if (action === 'getAll') {
-    return jsonResponse(getAllData());
-  }
-  return jsonResponse({ ok: true });
+  const p        = e.parameter || {};
+  const callback = p.callback  || '';
+  const action   = p.action    || '';
+
+  let result = { ok: true };
+  if (action === 'getAll') result = getAllData();
+
+  // 必須用 JSONP 格式回傳，讓 <script> 標籤能接收
+  const json   = JSON.stringify(result);
+  const output = callback
+    ? ContentService.createTextOutput(callback + '(' + json + ')')
+        .setMimeType(ContentService.MimeType.JAVASCRIPT)
+    : ContentService.createTextOutput(json)
+        .setMimeType(ContentService.MimeType.JSON);
+  return output;
 }
 
+// ── doPost：接收寫入操作（form-urlencoded）─────────────────────
 function doPost(e) {
-  const payload = JSON.parse(e.postData.contents);
-  const action  = payload.action || '';
+  const p      = e.parameter || {};
+  const action = p.action    || '';
 
-  if (action === 'addEmp')     handleAddEmp(payload);
-  if (action === 'removeEmp')  handleRemoveEmp(payload);
-  if (action === 'clockIn')    handleClockIn(payload);
-  if (action === 'clockOut')   handleClockOut(payload);
-  if (action === 'addTodo')    handleAddTodo(payload);
-  if (action === 'toggleTodo') handleToggleTodo(payload);
-  if (action === 'deleteTodo') handleDeleteTodo(payload);
+  if (action === 'addEmp')     handleAddEmp(p);
+  if (action === 'removeEmp')  handleRemoveEmp(p);
+  if (action === 'clockIn')    handleClockIn(p);
+  if (action === 'clockOut')   handleClockOut(p);
+  if (action === 'addTodo')    handleAddTodo(p);
+  if (action === 'toggleTodo') handleToggleTodo(p);
+  if (action === 'deleteTodo') handleDeleteTodo(p);
 
-  return jsonResponse({ ok: true });
+  return ContentService.createTextOutput('ok');
 }
 
+// ── 讀取所有資料 ────────────────────────────────────────────────
 function getAllData() {
-  const ss     = SpreadsheetApp.openById(SS_ID);
-  const empSh  = getOrCreate(ss, '員工');
-  const clkSh  = getOrCreate(ss, '打卡');
-  const tdSh   = getOrCreate(ss, '代辦');
-  const today  = fmtDate(new Date());
+  const ss    = SpreadsheetApp.openById(SS_ID);
+  const empSh = getOrCreate(ss, '員工');
+  const clkSh = getOrCreate(ss, '打卡');
+  const tdSh  = getOrCreate(ss, '代辦');
+  const today = fmtDate(new Date());
 
+  // 員工清單
   const emps = getRows(empSh).map(r => r[0]).filter(Boolean);
 
+  // 今日打卡狀態
   const states = {};
   emps.forEach(n => { states[n] = { on: false, in: null, out: null }; });
   getRows(clkSh).forEach(r => {
-    const [name, date, inT, outT] = r;
-    const d = date instanceof Date ? fmtDate(date) : String(date);
+    const name = r[0], d = toDateStr(r[1]), inT = r[2], outT = r[3];
     if (d === today && states[name] !== undefined) {
       states[name].in  = inT  || null;
       states[name].out = outT || null;
@@ -547,26 +568,24 @@ function getAllData() {
     }
   });
 
+  // 今日 Todos（未刪除）
   const todos = getRows(tdSh)
-    .filter(r => {
-      const d = r[0] instanceof Date ? fmtDate(r[0]) : String(r[0]);
-      return d === today && !r[4];
-    })
+    .filter(r => toDateStr(r[0]) === today && !r[4])
     .map(r => ({
       id:   String(r[1]),
       text: String(r[2]),
-      done: r[3] === true || r[3] === 'true' || r[3] === '1'
+      done: r[3] === true || String(r[3]) === 'true' || String(r[3]) === '1'
     }));
 
   return { emps, states, todos };
 }
 
+// ── 員工 ────────────────────────────────────────────────────────
 function handleAddEmp(p) {
   const ss = SpreadsheetApp.openById(SS_ID);
   const sh = getOrCreate(ss, '員工');
   if (!sh.getLastRow()) sh.appendRow(['姓名']);
-  const rows = getRows(sh);
-  if (!rows.some(r => r[0] === p.name)) sh.appendRow([p.name]);
+  if (!getRows(sh).some(r => r[0] === p.name)) sh.appendRow([p.name]);
 }
 
 function handleRemoveEmp(p) {
@@ -578,6 +597,7 @@ function handleRemoveEmp(p) {
   }
 }
 
+// ── 打卡 ────────────────────────────────────────────────────────
 function handleClockIn(p) {
   const ss    = SpreadsheetApp.openById(SS_ID);
   const sh    = getOrCreate(ss, '打卡');
@@ -585,10 +605,9 @@ function handleClockIn(p) {
   const today = fmtDate(new Date());
   const data  = sh.getDataRange().getValues();
   for (let i = 1; i < data.length; i++) {
-    const d = data[i][1] instanceof Date ? fmtDate(data[i][1]) : String(data[i][1]);
-    if (data[i][0] === p.name && d === today) {
-      sh.getRange(i+1,3).setValue(p.inTime);
-      sh.getRange(i+1,4).setValue('');
+    if (data[i][0] === p.name && toDateStr(data[i][1]) === today) {
+      sh.getRange(i+1, 3).setValue(p.inTime);
+      sh.getRange(i+1, 4).setValue('');
       return;
     }
   }
@@ -601,21 +620,20 @@ function handleClockOut(p) {
   const today = fmtDate(new Date());
   const data  = sh.getDataRange().getValues();
   for (let i = 1; i < data.length; i++) {
-    const d = data[i][1] instanceof Date ? fmtDate(data[i][1]) : String(data[i][1]);
-    if (data[i][0] === p.name && d === today) {
-      sh.getRange(i+1,4).setValue(p.outTime);
+    if (data[i][0] === p.name && toDateStr(data[i][1]) === today) {
+      sh.getRange(i+1, 4).setValue(p.outTime);
       return;
     }
   }
   sh.appendRow([p.name, today, p.inTime || '', p.outTime]);
 }
 
+// ── 代辦 ────────────────────────────────────────────────────────
 function handleAddTodo(p) {
-  const ss    = SpreadsheetApp.openById(SS_ID);
-  const sh    = getOrCreate(ss, '代辦');
+  const ss  = SpreadsheetApp.openById(SS_ID);
+  const sh  = getOrCreate(ss, '代辦');
   if (!sh.getLastRow()) sh.appendRow(['日期','ID','內容','完成','刪除']);
-  const today = fmtDate(new Date());
-  sh.appendRow([today, p.id, p.text, false, '']);
+  sh.appendRow([fmtDate(new Date()), p.id, p.text, false, '']);
 }
 
 function handleToggleTodo(p) {
@@ -624,7 +642,7 @@ function handleToggleTodo(p) {
   const data = sh.getDataRange().getValues();
   for (let i = 1; i < data.length; i++) {
     if (String(data[i][1]) === String(p.id)) {
-      sh.getRange(i+1,4).setValue(p.done === true || p.done === 'true');
+      sh.getRange(i+1, 4).setValue(p.done === '1' || p.done === 'true');
       return;
     }
   }
@@ -636,30 +654,28 @@ function handleDeleteTodo(p) {
   const data = sh.getDataRange().getValues();
   for (let i = 1; i < data.length; i++) {
     if (String(data[i][1]) === String(p.id)) {
-      sh.getRange(i+1,5).setValue('deleted');
+      sh.getRange(i+1, 5).setValue('deleted');
       return;
     }
   }
 }
 
+// ── 工具 ────────────────────────────────────────────────────────
 function getOrCreate(ss, name) {
   return ss.getSheetByName(name) || ss.insertSheet(name);
 }
 function getRows(sh) {
   const last = sh.getLastRow();
   if (last < 2) return [];
-  return sh.getRange(2, 1, last - 1, sh.getLastColumn() || 1).getValues();
+  return sh.getRange(2, 1, last - 1, Math.max(sh.getLastColumn(), 1)).getValues();
 }
 function fmtDate(d) {
   return Utilities.formatDate(d, 'Asia/Taipei', 'yyyy/MM/dd');
 }
-function jsonResponse(data) {
-  return ContentService
-    .createTextOutput(JSON.stringify(data))
-    .setMimeType(ContentService.MimeType.JSON);
+function toDateStr(v) {
+  if (v instanceof Date) return fmtDate(v);
+  return String(v);
 }
-
-================================================================
 -->
 </body>
 </html>
