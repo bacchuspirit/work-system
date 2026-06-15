@@ -459,34 +459,15 @@ async function removeEmp(name) {
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbyUTNmo9bAMfMgtrsNeX-yoDdG9pk30WNY6J-QiozGr-JEqs_7qas3-cO63-0t8YWT-Pg/exec';
 
 function pingSheet(name, inTime, outTime) {
-  // Apps Script doGet 用 POST form 送出，參數不會被 redirect 丟棄
-  const form = document.createElement('form');
-  form.method = 'POST';
-  form.action = GAS_URL;
-  form.target = '_gasframe';
-  form.style.display = 'none';
-
-  [['name', name], ['inTime', inTime], ['outTime', outTime]].forEach(([k, v]) => {
-    const inp = document.createElement('input');
-    inp.type  = 'hidden';
-    inp.name  = k;
-    inp.value = v;
-    form.appendChild(inp);
-  });
-
-  // 建立隱藏的 iframe 承接 form submit，避免跳頁
-  let fr = document.getElementById('_gasframe');
-  if (!fr) {
-    fr = document.createElement('iframe');
-    fr.name = '_gasframe';
-    fr.id   = '_gasframe';
-    fr.style.display = 'none';
-    document.body.appendChild(fr);
-  }
-
-  document.body.appendChild(form);
-  form.submit();
-  setTimeout(() => { try { form.remove(); } catch(e){} }, 3000);
+  // fetch no-cors + application/x-www-form-urlencoded
+  // Apps Script doPost 從 e.postData.contents 解析參數
+  const body = new URLSearchParams({ name, inTime, outTime }).toString();
+  fetch(GAS_URL, {
+    method:  'POST',
+    mode:    'no-cors',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body:    body
+  }).catch(() => {});
 }
 
 async function clockIn(name) {
