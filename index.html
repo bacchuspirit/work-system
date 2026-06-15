@@ -1,1168 +1,616 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>工作日系統</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap"
-    rel="stylesheet" />
-  <style>
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    :root {
-      --navy: #1E2235;
-      --navy-3: #2F3550;
-      --white: #FFFFFF;
-      --bg: #F5F6F8;
-      --bg-2: #ECEEF2;
-      --mint: #00C48C;
-      --mint-lt: #E6F9F3;
-      --mint-dk: #009E70;
-      --coral: #F24E4E;
-      --coral-lt: #FEF0F0;
-      --purple: #7B6EF6;
-      --text-1: #1A1D2E;
-      --text-2: #5A5E72;
-      --text-3: #9A9DB0;
-      --border: #E2E4EC;
-      --radius: 10px;
-      --radius-lg: 14px;
-    }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text-1);
-      min-height: 100vh;
-    }
-
-    /* ── TOPBAR ── */
-    .topbar {
-      background: var(--navy);
-      padding: 0 28px;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .topbar-left {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      text-decoration: none;
-    }
-
-    .logo-icon {
-      width: 30px;
-      height: 30px;
-      background: var(--mint);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .logo-icon svg {
-      width: 16px;
-      height: 16px;
-    }
-
-    .logo-name {
-      font-size: 15px;
-      font-weight: 600;
-      color: #fff;
-      letter-spacing: -0.3px;
-    }
-
-    .topbar-divider {
-      width: 1px;
-      height: 20px;
-      background: var(--navy-3);
-    }
-
-    .date-chip {
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.55);
-    }
-
-    .clock-display {
-      font-family: 'DM Mono', monospace;
-      font-size: 20px;
-      font-weight: 500;
-      color: #fff;
-      letter-spacing: 1px;
-      line-height: 1;
-    }
-
-    .clock-dot {
-      display: inline-block;
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--mint);
-      margin-right: 8px;
-      animation: pulse 2s ease-in-out infinite;
-      vertical-align: middle;
-      position: relative;
-      top: -1px;
-    }
-
-    @keyframes pulse {
-
-      0%,
-      100% {
-        opacity: 1;
-        transform: scale(1);
-      }
-
-      50% {
-        opacity: 0.4;
-        transform: scale(0.7);
-      }
-    }
-
-    .sync-indicator {
-      font-size: 11px;
-      color: rgba(255, 255, 255, 0.4);
-      font-family: 'DM Mono', monospace;
-      margin-left: 14px;
-      transition: color .3s;
-    }
-
-    .sync-indicator.syncing {
-      color: var(--mint);
-    }
-
-    .sync-indicator.error {
-      color: #f08080;
-    }
-
-    /* ── MAIN ── */
-    .main {
-      max-width: 1060px;
-      margin: 0 auto;
-      padding: 28px 24px 60px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      align-items: start;
-    }
-
-    @media (max-width: 720px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-
-      .topbar {
-        padding: 0 16px;
-      }
-
-      .main {
-        padding: 20px 16px 60px;
-      }
-    }
-
-    /* ── CARD ── */
-    .card {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-    }
-
-    .card-head {
-      padding: 18px 20px 14px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .card-title {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-1);
-      letter-spacing: 0.4px;
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 7px;
-    }
-
-    .card-title svg {
-      color: var(--text-3);
-    }
-
-    .pill {
-      font-size: 11px;
-      font-weight: 500;
-      padding: 3px 9px;
-      border-radius: 20px;
-      background: var(--bg-2);
-      color: var(--text-2);
-    }
-
-    .pill.active {
-      background: var(--mint-lt);
-      color: var(--mint-dk);
-    }
-
-    .card-body {
-      padding: 16px 20px 20px;
-    }
-
-    /* ── ADD ROW ── */
-    .add-row {
-      display: flex;
-      gap: 7px;
-      margin-bottom: 14px;
-    }
-
-    .add-row input {
-      flex: 1;
-      height: 38px;
-      padding: 0 12px;
-      font-size: 13px;
-      font-family: 'Inter', sans-serif;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background: var(--bg);
-      color: var(--text-1);
-      outline: none;
-      transition: border-color .15s, background .15s;
-    }
-
-    .add-row input:focus {
-      border-color: var(--purple);
-      background: var(--white);
-    }
-
-    .add-row input::placeholder {
-      color: var(--text-3);
-    }
-
-    .btn-add {
-      width: 38px;
-      height: 38px;
-      border: none;
-      border-radius: var(--radius);
-      background: var(--navy);
-      color: #fff;
-      font-size: 20px;
-      line-height: 1;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      transition: background .15s;
-    }
-
-    .btn-add:hover {
-      background: var(--navy-3);
-    }
-
-    /* ── TODO TEXTAREA ── */
-    .todo-add-wrap {
-      margin-bottom: 14px;
-    }
-
-    .todo-textarea {
-      width: 100%;
-      min-height: 64px;
-      padding: 10px 12px;
-      font-size: 13px;
-      font-family: 'Inter', sans-serif;
-      line-height: 1.6;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background: var(--bg);
-      color: var(--text-1);
-      outline: none;
-      resize: vertical;
-      transition: border-color .15s, background .15s;
-    }
-
-    .todo-textarea:focus {
-      border-color: var(--purple);
-      background: var(--white);
-    }
-
-    .todo-textarea::placeholder {
-      color: var(--text-3);
-    }
-
-    .todo-add-btns {
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 6px;
-    }
-
-    .btn-add-todo {
-      height: 32px;
-      padding: 0 14px;
-      border: none;
-      border-radius: var(--radius);
-      background: var(--navy);
-      color: #fff;
-      font-size: 12px;
-      font-weight: 500;
-      font-family: 'Inter', sans-serif;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      transition: background .15s;
-    }
-
-    .btn-add-todo:hover {
-      background: var(--navy-3);
-    }
-
-    /* ── EMP ROWS ── */
-    .emp-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .emp-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 12px;
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
-      background: var(--bg);
-      transition: border-color .2s, background .2s;
-    }
-
-    .emp-row.checked-in {
-      border-color: #b2ecd8;
-      background: var(--mint-lt);
-    }
-
-    .avatar {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      font-weight: 600;
-      flex-shrink: 0;
-    }
-
-    .emp-info {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .emp-name {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text-1);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .emp-time {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      color: var(--text-3);
-      margin-top: 1px;
-    }
-
-    .emp-time.on {
-      color: var(--mint-dk);
-    }
-
-    .btn-clock {
-      height: 30px;
-      padding: 0 12px;
-      border: none;
-      border-radius: 7px;
-      font-size: 12px;
-      font-weight: 500;
-      font-family: 'Inter', sans-serif;
-      cursor: pointer;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      transition: opacity .15s, transform .1s;
-    }
-
-    .btn-clock:active {
-      transform: scale(0.96);
-    }
-
-    .btn-in {
-      background: var(--mint);
-      color: #fff;
-    }
-
-    .btn-in:hover {
-      opacity: .88;
-    }
-
-    .btn-out {
-      background: var(--coral);
-      color: #fff;
-    }
-
-    .btn-out:hover {
-      opacity: .88;
-    }
-
-    .btn-remove {
-      background: none;
-      border: none;
-      color: var(--text-3);
-      cursor: pointer;
-      font-size: 16px;
-      line-height: 1;
-      padding: 2px;
-      flex-shrink: 0;
-      transition: color .15s;
-    }
-
-    .btn-remove:hover {
-      color: var(--coral);
-    }
-
-    /* ── TODO ITEMS ── */
-    .todo-list {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .todo-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      padding: 9px 12px;
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
-      background: var(--bg);
-      transition: opacity .2s;
-    }
-
-    .todo-item.done {
-      opacity: .5;
-    }
-
-    .check-btn {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      border: 2px solid var(--border);
-      background: var(--white);
-      cursor: pointer;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: border-color .15s, background .15s;
-      margin-top: 2px;
-    }
-
-    .check-btn:hover {
-      border-color: var(--mint);
-    }
-
-    .check-btn.checked {
-      background: var(--mint);
-      border-color: var(--mint);
-    }
-
-    .check-btn.checked::after {
-      content: '';
-      width: 6px;
-      height: 10px;
-      border: 2px solid #fff;
-      border-top: none;
-      border-left: none;
-      transform: rotate(42deg) translate(-1px, -1px);
-      display: block;
-    }
-
-    .todo-text {
-      flex: 1;
-      font-size: 13px;
-      color: var(--text-1);
-      line-height: 1.6;
-      min-width: 0;
-      white-space: pre-wrap;
-      /* ← 保留換行 */
-      word-break: break-word;
-    }
-
-    .todo-text.done {
-      text-decoration: line-through;
-      color: var(--text-3);
-    }
-
-    .btn-del {
-      background: none;
-      border: none;
-      color: var(--text-3);
-      cursor: pointer;
-      font-size: 15px;
-      line-height: 1;
-      padding: 2px;
-      flex-shrink: 0;
-      opacity: 0;
-      transition: color .15s, opacity .15s;
-      margin-top: 1px;
-    }
-
-    .todo-item:hover .btn-del {
-      opacity: 1;
-    }
-
-    .btn-del:hover {
-      color: var(--coral);
-    }
-
-    .todo-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 14px;
-      padding-top: 12px;
-      border-top: 1px solid var(--border);
-    }
-
-    .todo-stat {
-      font-size: 12px;
-      color: var(--text-3);
-    }
-
-    .btn-clear {
-      font-size: 12px;
-      padding: 5px 11px;
-      border-radius: 7px;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--text-2);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      transition: background .15s, color .15s, border-color .15s;
-    }
-
-    .btn-clear:hover {
-      background: var(--coral-lt);
-      border-color: #f9b0b0;
-      color: var(--coral);
-    }
-
-    .empty-hint {
-      text-align: center;
-      padding: 24px 0;
-      font-size: 13px;
-      color: var(--text-3);
-    }
-
-    /* ── PROGRESS ── */
-    .progress-wrap {
-      margin-top: 10px;
-    }
-
-    .progress-label {
-      font-size: 11px;
-      color: var(--text-3);
-      margin-bottom: 5px;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .progress-bar {
-      height: 4px;
-      background: var(--bg-2);
-      border-radius: 2px;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: var(--mint);
-      border-radius: 2px;
-      transition: width .4s ease;
-    }
-
-    /* ── TOAST ── */
-    .toast-container {
-      position: fixed;
-      bottom: 28px;
-      right: 28px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      z-index: 9999;
-      pointer-events: none;
-    }
-
-    .toast {
-      background: var(--navy);
-      color: #fff;
-      font-size: 13px;
-      padding: 10px 16px;
-      border-radius: var(--radius);
-      opacity: 0;
-      transform: translateY(8px);
-      transition: opacity .25s, transform .25s;
-      max-width: 280px;
-    }
-
-    .toast.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .toast.success {
-      border-left: 3px solid var(--mint);
-    }
-
-    .toast.info {
-      border-left: 3px solid var(--purple);
-    }
-
-    .toast.warn {
-      border-left: 3px solid #f0a030;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>工作日系統</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #1E2235; --navy-3: #2F3550;
+    --white: #FFFFFF; --bg: #F5F6F8; --bg-2: #ECEEF2;
+    --mint: #00C48C; --mint-lt: #E6F9F3; --mint-dk: #009E70;
+    --coral: #F24E4E; --coral-lt: #FEF0F0;
+    --purple: #7B6EF6;
+    --text-1: #1A1D2E; --text-2: #5A5E72; --text-3: #9A9DB0;
+    --border: #E2E4EC; --radius: 10px; --radius-lg: 14px;
+  }
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text-1); min-height: 100vh; }
+
+  /* TOPBAR */
+  .topbar {
+    background: var(--navy); padding: 0 28px; height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .logo { display: flex; align-items: center; gap: 9px; text-decoration: none; }
+  .logo-icon { width: 30px; height: 30px; background: var(--mint); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+  .logo-icon svg { width: 16px; height: 16px; }
+  .logo-name { font-size: 15px; font-weight: 600; color: #fff; letter-spacing: -0.3px; }
+  .topbar-div { width: 1px; height: 20px; background: var(--navy-3); }
+  .date-chip { font-size: 12px; color: rgba(255,255,255,0.5); }
+  .sync-pill {
+    font-size: 11px; font-family: 'DM Mono', monospace;
+    padding: 3px 9px; border-radius: 20px;
+    background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.45);
+    transition: background .3s, color .3s;
+  }
+  .sync-pill.ok     { background: rgba(0,196,140,0.18); color: var(--mint); }
+  .sync-pill.busy   { background: rgba(123,110,246,0.18); color: #a89df8; }
+  .sync-pill.error  { background: rgba(242,78,78,0.18); color: #f08080; }
+  .clock-display { font-family: 'DM Mono', monospace; font-size: 20px; font-weight: 500; color: #fff; letter-spacing: 1px; }
+  .clock-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--mint); margin-right: 8px; animation: pulse 2s ease-in-out infinite; vertical-align: middle; position: relative; top: -1px; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
+
+  /* LAYOUT */
+  .main { max-width: 1060px; margin: 0 auto; padding: 28px 24px 60px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+  @media(max-width:720px){ .grid{grid-template-columns:1fr} .topbar{padding:0 16px} .main{padding:20px 16px 60px} }
+
+  /* CARD */
+  .card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+  .card-head { padding: 18px 20px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .card-title { font-size: 13px; font-weight: 600; color: var(--text-1); letter-spacing: .4px; text-transform: uppercase; display: flex; align-items: center; gap: 7px; }
+  .card-title svg { color: var(--text-3); }
+  .pill { font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 20px; background: var(--bg-2); color: var(--text-2); }
+  .pill.active { background: var(--mint-lt); color: var(--mint-dk); }
+  .card-body { padding: 16px 20px 20px; }
+
+  /* ADD ROW */
+  .add-row { display: flex; gap: 7px; margin-bottom: 14px; }
+  .add-row input {
+    flex: 1; height: 38px; padding: 0 12px; font-size: 13px; font-family: 'Inter', sans-serif;
+    border: 1px solid var(--border); border-radius: var(--radius);
+    background: var(--bg); color: var(--text-1); outline: none;
+    transition: border-color .15s, background .15s;
+  }
+  .add-row input:focus { border-color: var(--purple); background: var(--white); }
+  .add-row input::placeholder { color: var(--text-3); }
+  .btn-add { width: 38px; height: 38px; border: none; border-radius: var(--radius); background: var(--navy); color: #fff; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .15s; }
+  .btn-add:hover { background: var(--navy-3); }
+
+  /* EMP */
+  .emp-list { display: flex; flex-direction: column; gap: 8px; }
+  .emp-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--bg); transition: border-color .2s, background .2s; }
+  .emp-row.checked-in { border-color: #b2ecd8; background: var(--mint-lt); }
+  .avatar { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; flex-shrink: 0; }
+  .emp-info { flex: 1; min-width: 0; }
+  .emp-name { font-size: 13px; font-weight: 500; color: var(--text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .emp-time { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-3); margin-top: 1px; }
+  .emp-time.on { color: var(--mint-dk); }
+  .btn-clock { height: 30px; padding: 0 12px; border: none; border-radius: 7px; font-size: 12px; font-weight: 500; font-family: 'Inter', sans-serif; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; gap: 5px; transition: opacity .15s, transform .1s; }
+  .btn-clock:active { transform: scale(.96); }
+  .btn-in { background: var(--mint); color: #fff; } .btn-in:hover { opacity: .88; }
+  .btn-out { background: var(--coral); color: #fff; } .btn-out:hover { opacity: .88; }
+  .btn-remove { background: none; border: none; color: var(--text-3); cursor: pointer; font-size: 16px; line-height: 1; padding: 2px; flex-shrink: 0; transition: color .15s; }
+  .btn-remove:hover { color: var(--coral); }
+
+  /* TODO TEXTAREA */
+  .todo-add-wrap { margin-bottom: 14px; }
+  .todo-textarea { width: 100%; min-height: 64px; padding: 10px 12px; font-size: 13px; font-family: 'Inter', sans-serif; line-height: 1.6; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text-1); outline: none; resize: vertical; transition: border-color .15s, background .15s; }
+  .todo-textarea:focus { border-color: var(--purple); background: var(--white); }
+  .todo-textarea::placeholder { color: var(--text-3); }
+  .todo-add-btns { display: flex; justify-content: flex-end; margin-top: 6px; }
+  .btn-add-todo { height: 32px; padding: 0 14px; border: none; border-radius: var(--radius); background: var(--navy); color: #fff; font-size: 12px; font-weight: 500; font-family: 'Inter', sans-serif; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: background .15s; }
+  .btn-add-todo:hover { background: var(--navy-3); }
+
+  /* TODO */
+  .todo-list { display: flex; flex-direction: column; gap: 6px; }
+  .todo-item { display: flex; align-items: flex-start; gap: 10px; padding: 9px 12px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--bg); transition: opacity .2s; }
+  .todo-item.done { opacity: .5; }
+  .check-btn { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--border); background: var(--white); cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: border-color .15s, background .15s; margin-top: 2px; }
+  .check-btn:hover { border-color: var(--mint); }
+  .check-btn.checked { background: var(--mint); border-color: var(--mint); }
+  .check-btn.checked::after { content: ''; width: 6px; height: 10px; border: 2px solid #fff; border-top: none; border-left: none; transform: rotate(42deg) translate(-1px,-1px); display: block; }
+  .todo-text { flex: 1; font-size: 13px; color: var(--text-1); line-height: 1.6; min-width: 0; white-space: pre-wrap; word-break: break-word; }
+  .todo-text.done { text-decoration: line-through; color: var(--text-3); }
+  .btn-del { background: none; border: none; color: var(--text-3); cursor: pointer; font-size: 15px; line-height: 1; padding: 2px; flex-shrink: 0; opacity: 0; transition: color .15s, opacity .15s; margin-top: 1px; }
+  .todo-item:hover .btn-del { opacity: 1; }
+  .btn-del:hover { color: var(--coral); }
+  .todo-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); }
+  .todo-stat { font-size: 12px; color: var(--text-3); }
+  .btn-clear { font-size: 12px; padding: 5px 11px; border-radius: 7px; border: 1px solid var(--border); background: transparent; color: var(--text-2); cursor: pointer; display: flex; align-items: center; gap: 5px; transition: background .15s, color .15s, border-color .15s; }
+  .btn-clear:hover { background: var(--coral-lt); border-color: #f9b0b0; color: var(--coral); }
+  .empty-hint { text-align: center; padding: 24px 0; font-size: 13px; color: var(--text-3); }
+
+  /* PROGRESS */
+  .progress-wrap { margin-top: 10px; }
+  .progress-label { font-size: 11px; color: var(--text-3); margin-bottom: 5px; display: flex; justify-content: space-between; }
+  .progress-bar { height: 4px; background: var(--bg-2); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--mint); border-radius: 2px; transition: width .4s ease; }
+
+  /* TOAST */
+  .toast-container { position: fixed; bottom: 28px; right: 28px; display: flex; flex-direction: column; gap: 8px; z-index: 9999; pointer-events: none; }
+  .toast { background: var(--navy); color: #fff; font-size: 13px; padding: 10px 16px; border-radius: var(--radius); opacity: 0; transform: translateY(8px); transition: opacity .25s, transform .25s; max-width: 300px; }
+  .toast.show { opacity: 1; transform: translateY(0); }
+  .toast.success { border-left: 3px solid var(--mint); }
+  .toast.info    { border-left: 3px solid var(--purple); }
+  .toast.warn    { border-left: 3px solid #f0a030; }
+</style>
 </head>
-
 <body>
 
-  <header class="topbar">
-    <div class="topbar-left">
-      <a class="logo" href="#">
-        <div class="logo-icon">
-          <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="2" y="2" width="5" height="5" rx="1.2" fill="white" />
-            <rect x="9" y="2" width="5" height="5" rx="1.2" fill="white" opacity=".6" />
-            <rect x="2" y="9" width="5" height="5" rx="1.2" fill="white" opacity=".6" />
-            <rect x="9" y="9" width="5" height="5" rx="1.2" fill="white" opacity=".35" />
-          </svg>
-        </div>
-        <span class="logo-name">工作日系統</span>
-      </a>
-      <div class="topbar-divider"></div>
-      <span class="date-chip" id="date-chip"></span>
-      <span class="sync-indicator" id="sync-indicator">⟳ 同步中…</span>
-    </div>
-    <div style="display:flex;align-items:center;gap:8px">
-      <span class="clock-dot"></span>
-      <span class="clock-display" id="live-clock">--:--:--</span>
-    </div>
-  </header>
-
-  <main class="main">
-    <div class="grid">
-
-      <!-- LEFT: ATTENDANCE -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-              <circle cx="12" cy="7" r="4" />
-              <path d="M5.5 20a7 7 0 0 1 13 0" />
-            </svg>
-            員工打卡
-          </span>
-          <span class="pill" id="in-badge">0 人上班中</span>
-        </div>
-        <div class="card-body">
-          <div class="add-row">
-            <input type="text" id="new-emp" placeholder="輸入員工姓名新增…" />
-            <button class="btn-add" onclick="addEmp()" aria-label="新增員工">+</button>
-          </div>
-          <div class="emp-list" id="emp-list"></div>
-        </div>
+<header class="topbar">
+  <div class="topbar-left">
+    <a class="logo" href="#">
+      <div class="logo-icon">
+        <svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1.2" fill="white"/><rect x="9" y="2" width="5" height="5" rx="1.2" fill="white" opacity=".6"/><rect x="2" y="9" width="5" height="5" rx="1.2" fill="white" opacity=".6"/><rect x="9" y="9" width="5" height="5" rx="1.2" fill="white" opacity=".35"/></svg>
       </div>
+      <span class="logo-name">工作日系統</span>
+    </a>
+    <div class="topbar-div"></div>
+    <span class="date-chip" id="date-chip"></span>
+    <span class="sync-pill" id="sync-pill">● 連線中</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px">
+    <span class="clock-dot"></span>
+    <span class="clock-display" id="live-clock">--:--:--</span>
+  </div>
+</header>
 
-      <!-- RIGHT: TODO -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-              <path d="M9 11l3 3L22 4" />
-              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
-            </svg>
-            今日代辦
-          </span>
-          <span class="pill" id="todo-badge">0 項</span>
+<main class="main">
+  <div class="grid">
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="7" r="4"/><path d="M5.5 20a7 7 0 0 1 13 0"/></svg>
+          員工打卡
+        </span>
+        <span class="pill" id="in-badge">0 人上班中</span>
+      </div>
+      <div class="card-body">
+        <div class="add-row">
+          <input type="text" id="new-emp" placeholder="輸入員工姓名新增…" />
+          <button class="btn-add" onclick="addEmp()" aria-label="新增">+</button>
         </div>
-        <div class="card-body">
-          <div class="todo-add-wrap">
-            <textarea class="todo-textarea" id="new-todo" placeholder="輸入待辦事項（可換行填入多行內容）…" rows="3"></textarea>
-            <div class="todo-add-btns">
-              <button class="btn-add-todo" onclick="addTodo()">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                  <line x1="12" y1="5" x2="12" y2="19" />
-                  <line x1="5" y1="12" x2="19" y2="12" />
-                </svg>
-                新增事項
-              </button>
-            </div>
-          </div>
-          <div id="todo-list" class="todo-list"></div>
-          <div class="progress-wrap" id="progress-wrap" style="display:none">
-            <div class="progress-label">
-              <span>完成進度</span>
-              <span id="progress-pct">0%</span>
-            </div>
-            <div class="progress-bar">
-              <div class="progress-fill" id="progress-fill" style="width:0%"></div>
-            </div>
-          </div>
-          <div class="todo-footer">
-            <span class="todo-stat" id="todo-stat"></span>
-            <button class="btn-clear" onclick="clearDone()">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                <polyline points="3 6 5 6 21 6" />
-                <path d="M19 6l-1 14H6L5 6" />
-                <path d="M10 11v6M14 11v6" />
-              </svg>
-              清除完成項目
+        <div class="emp-list" id="emp-list"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          今日代辦
+        </span>
+        <span class="pill" id="todo-badge">0 項</span>
+      </div>
+      <div class="card-body">
+        <div class="todo-add-wrap">
+          <textarea class="todo-textarea" id="new-todo" placeholder="輸入待辦事項（可換行填入多行內容）…" rows="3"></textarea>
+          <div class="todo-add-btns">
+            <button class="btn-add-todo" onclick="addTodo()">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              新增事項
             </button>
           </div>
         </div>
+        <div id="todo-list" class="todo-list"></div>
+        <div class="progress-wrap" id="progress-wrap" style="display:none">
+          <div class="progress-label"><span>完成進度</span><span id="progress-pct">0%</span></div>
+          <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+        </div>
+        <div class="todo-footer">
+          <span class="todo-stat" id="todo-stat"></span>
+          <button class="btn-clear" onclick="clearDone()">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+            清除完成項目
+          </button>
+        </div>
       </div>
-
     </div>
-  </main>
+  </div>
+</main>
 
-  <div class="toast-container" id="toast-container"></div>
+<div class="toast-container" id="toast-container"></div>
 
-  <script>
-    // ═══════════════════════════════════════════
-    //  設定：Google Apps Script 端點（已內建）
-    // ═══════════════════════════════════════════
-    const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyUTNmo9bAMfMgtrsNeX-yoDdG9pk30WNY6J-QiozGr-JEqs_7qas3-cO63-0t8YWT-Pg/exec';
-    const POLL_MS = 8000;   // 每 8 秒同步一次
+<script>
+// ══════════════════════════════════════════════
+//  Apps Script 端點（已內建，doGet 讀取、doPost 寫入）
+// ══════════════════════════════════════════════
+const API = 'https://script.google.com/macros/s/AKfycbyUTNmo9bAMfMgtrsNeX-yoDdG9pk30WNY6J-QiozGr-JEqs_7qas3-cO63-0t8YWT-Pg/exec';
+const POLL_MS = 6000;
 
-    // ═══════════════════════════════════════════
-    //  本地狀態（快取用，真實資料來自 Sheet）
-    // ═══════════════════════════════════════════
-    const EMP_PALETTES = [
-      ['#EEF0FF', '#5A52D5'], ['#E6F9F3', '#009E70'], ['#FFF0EC', '#D84A1B'],
-      ['#FFF5E6', '#C47A15'], ['#F9EEFF', '#8B3FD4'], ['#E8F5FF', '#1A6FB8'],
-      ['#FFEEF5', '#C4306A'], ['#F0FFF4', '#276E3C']
-    ];
+// ══════════════════════════════════════════════
+//  本地快取
+// ══════════════════════════════════════════════
+const PALETTES = [
+  ['#EEF0FF','#5A52D5'],['#E6F9F3','#009E70'],['#FFF0EC','#D84A1B'],
+  ['#FFF5E6','#C47A15'],['#F9EEFF','#8B3FD4'],['#E8F5FF','#1A6FB8'],
+  ['#FFEEF5','#C4306A'],['#F0FFF4','#276E3C']
+];
+let emps   = [];
+let states = {};
+let todos  = [];
 
-    let emps = [];
-    let states = {};   // { 姓名: { on, in, out } }
-    let todos = [];   // [{ id, text, done }]
-    let lastEtag = '';
-    let isBusy = false;
+// ══════════════════════════════════════════════
+//  Sync UI
+// ══════════════════════════════════════════════
+function setSyncUI(state, msg) {
+  const el = document.getElementById('sync-pill');
+  el.className = 'sync-pill ' + state;
+  el.textContent = msg;
+}
 
-    // ── 工具 ──────────────────────────────────
-    function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
-    function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
-    function nowTime() { return new Date().toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit', second: '2-digit' }); }
-    function nowDate() { return new Date().toLocaleDateString('zh-TW'); }
+// ══════════════════════════════════════════════
+//  API 呼叫
+//  doGet  → 讀取全部狀態（帶 CORS header）
+//  doPost → 寫入操作（帶 CORS header）
+// ══════════════════════════════════════════════
+async function pullState() {
+  setSyncUI('busy', '⟳ 同步中');
+  try {
+    const res  = await fetch(API + '?action=getAll&t=' + Date.now());
+    if (!res.ok) throw new Error(res.status);
+    const data = await res.json();
+    if (data.emps)   { emps = data.emps; states = data.states || {}; renderEmps(); }
+    if (data.todos)  { todos = data.todos; renderTodos(); }
+    setSyncUI('ok', '● 已同步');
+  } catch(e) {
+    setSyncUI('error', '✕ 離線');
+  }
+}
 
-    function setSyncStatus(state) {
-      const el = document.getElementById('sync-indicator');
-      el.className = 'sync-indicator' + (state === 'ok' ? '' : state === 'syncing' ? ' syncing' : ' error');
-      el.textContent = state === 'ok' ? '● 已同步' : state === 'syncing' ? '⟳ 同步中…' : '✕ 離線';
-    }
+async function postAction(payload) {
+  try {
+    await fetch(API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    setTimeout(pullState, 600);
+  } catch(e) {
+    setSyncUI('error', '✕ 離線');
+  }
+}
 
-    // ── 呼叫 Apps Script ──────────────────────
-    async function api(params) {
-      setSyncStatus('syncing');
-      try {
-        const url = SHEET_URL + '?' + new URLSearchParams(params).toString();
-        const res = await fetch(url, { mode: 'no-cors' });
-        // no-cors 不能讀回傳，所以呼叫後主動 pull 最新狀態
-        setTimeout(pullState, 800);
-        setSyncStatus('ok');
-      } catch (e) {
-        setSyncStatus('error');
-      }
-    }
+// ══════════════════════════════════════════════
+//  員工
+// ══════════════════════════════════════════════
+function initials(n) { return n.length >= 2 ? n.slice(-2) : n; }
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+function uid() { return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+function nowTime(){ return new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); }
+function nowDate(){ return new Date().toLocaleDateString('zh-TW'); }
 
-    // ── 拉取完整狀態（跨瀏覽器同步核心）────────
-    async function pullState() {
-      setSyncStatus('syncing');
-      try {
-        const res = await fetch(SHEET_URL + '?action=getAll&_=' + Date.now());
-        if (!res.ok) throw new Error('http ' + res.status);
-        const data = await res.json();
-
-        // 合併員工清單
-        if (data.emps && Array.isArray(data.emps)) {
-          emps = data.emps;
-          states = data.states || {};
-          renderEmps();
-        }
-        // 合併 todos
-        if (data.todos && Array.isArray(data.todos)) {
-          todos = data.todos;
-          renderTodos();
-        }
-        setSyncStatus('ok');
-      } catch (e) {
-        setSyncStatus('error');
-      }
-    }
-
-    // ═══════════════════════════════════════════
-    //  渲染：員工
-    // ═══════════════════════════════════════════
-    function initials(n) { return n.length >= 2 ? n.slice(-2) : n; }
-
-    function renderEmps() {
-      const list = document.getElementById('emp-list');
-      list.innerHTML = '';
-      let inCount = 0;
-      emps.forEach((name, i) => {
-        const s = states[name] || { on: false, in: null, out: null };
-        if (s.on) inCount++;
-        const [bg, fg] = EMP_PALETTES[i % EMP_PALETTES.length];
-        const row = document.createElement('div');
-        row.className = 'emp-row' + (s.on ? ' checked-in' : '');
-
-        let timeStr = '尚未打卡';
-        let timeCls = '';
-        if (s.on && s.in) { timeStr = '上班中　' + s.in; timeCls = 'on'; }
-        else if (s.in) { timeStr = s.in + (s.out ? '　→　' + s.out : ''); }
-
-        const safeName = esc(name).replace(/'/g, '&#39;');
-        row.innerHTML = `
+function renderEmps() {
+  const list = document.getElementById('emp-list');
+  list.innerHTML = '';
+  let inCount = 0;
+  emps.forEach((name, i) => {
+    const s = states[name] || { on: false, in: null, out: null };
+    if (s.on) inCount++;
+    const [bg, fg] = PALETTES[i % PALETTES.length];
+    const row = document.createElement('div');
+    row.className = 'emp-row' + (s.on ? ' checked-in' : '');
+    let timeStr = '尚未打卡', timeCls = '';
+    if (s.on && s.in)  { timeStr = '上班中　' + s.in; timeCls = 'on'; }
+    else if (s.in)     { timeStr = s.in + (s.out ? '　→　' + s.out : ''); }
+    row.innerHTML = `
       <div class="avatar" style="background:${bg};color:${fg}">${initials(name)}</div>
       <div class="emp-info">
         <div class="emp-name">${esc(name)}</div>
         <div class="emp-time ${timeCls}">${timeStr}</div>
       </div>
       ${s.on
-            ? `<button class="btn-clock btn-out" onclick="clockOut('${safeName}')">
+        ? `<button class="btn-clock btn-out" onclick="clockOut('${esc(name)}')">
              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
              下班
            </button>`
-            : `<button class="btn-clock btn-in" onclick="clockIn('${safeName}')">
+        : `<button class="btn-clock btn-in" onclick="clockIn('${esc(name)}')">
              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
              上班
-           </button>`
-          }
-      <button class="btn-remove" onclick="removeEmp('${safeName}')" aria-label="移除">×</button>
-    `;
-        list.appendChild(row);
-      });
-      const badge = document.getElementById('in-badge');
-      badge.textContent = inCount + ' 人上班中';
-      badge.className = 'pill' + (inCount > 0 ? ' active' : '');
-    }
-
-    // ═══════════════════════════════════════════
-    //  員工操作
-    // ═══════════════════════════════════════════
-    function clockIn(name) {
-      const t = nowTime(), d = nowDate();
-      if (!states[name]) states[name] = {};
-      states[name] = { on: true, in: t, out: null };
-      renderEmps();
-      api({ action: 'clockIn', name, date: d, inTime: t });
-      toast(name + '　上班打卡　' + t, 'success');
-    }
-    function clockOut(name) {
-      const t = nowTime(), d = nowDate();
-      if (!states[name]) states[name] = {};
-      const inT = states[name].in || '';
-      states[name].on = false;
-      states[name].out = t;
-      renderEmps();
-      api({ action: 'clockOut', name, date: d, outTime: t, inTime: inT });
-      toast(name + '　下班打卡　' + t, 'info');
-    }
-    function addEmp() {
-      const inp = document.getElementById('new-emp');
-      const n = inp.value.trim();
-      if (!n) return;
-      if (emps.includes(n)) { toast('員工已存在', 'warn'); return; }
-      emps.push(n);
-      renderEmps();
-      inp.value = '';
-      api({ action: 'addEmp', name: n });
-    }
-    function removeEmp(name) {
-      if (!confirm('確定移除「' + name + '」？')) return;
-      emps = emps.filter(e => e !== name);
-      delete states[name];
-      renderEmps();
-      api({ action: 'removeEmp', name });
-    }
-
-    // ═══════════════════════════════════════════
-    //  渲染：Todo
-    // ═══════════════════════════════════════════
-    function renderTodos() {
-      const list = document.getElementById('todo-list');
-      list.innerHTML = '';
-      const total = todos.length;
-      const done = todos.filter(t => t.done).length;
-
-      if (!total) {
-        list.innerHTML = '<div class="empty-hint">今天還沒有待辦事項</div>';
-      } else {
-        todos.forEach((t) => {
-          const item = document.createElement('div');
-          item.className = 'todo-item' + (t.done ? ' done' : '');
-          const safeId = esc(String(t.id)).replace(/'/g, "&#39;");
-          item.innerHTML = `
-        <button class="check-btn ${t.done ? 'checked' : ''}" onclick="toggleTodo('${safeId}')" aria-label="切換完成"></button>
-        <span class="todo-text ${t.done ? 'done' : ''}">${esc(t.text)}</span>
-        <button class="btn-del" onclick="delTodo('${safeId}')" aria-label="刪除">×</button>
-      `;
-          list.appendChild(item);
-        });
-      }
-
-      document.getElementById('todo-badge').textContent = total + ' 項';
-      document.getElementById('todo-stat').textContent = total ? done + ' / ' + total + ' 完成' : '';
-
-      const pw = document.getElementById('progress-wrap');
-      pw.style.display = total ? 'block' : 'none';
-      if (total) {
-        const pct = Math.round(done / total * 100);
-        document.getElementById('progress-pct').textContent = pct + '%';
-        document.getElementById('progress-fill').style.width = pct + '%';
-      }
-    }
-
-    // ═══════════════════════════════════════════
-    //  Todo 操作
-    // ═══════════════════════════════════════════
-    function addTodo() {
-      const ta = document.getElementById('new-todo');
-      const txt = ta.value.trim();
-      if (!txt) return;
-      const id = uid();
-      todos.push({ id, text: txt, done: false });
-      renderTodos();
-      ta.value = '';
-      api({ action: 'addTodo', id, text: encodeURIComponent(txt) });
-    }
-    function toggleTodo(id) {
-      const t = todos.find(t => String(t.id) === String(id));
-      if (!t) return;
-      t.done = !t.done;
-      renderTodos();
-      api({ action: 'toggleTodo', id, done: t.done ? '1' : '0' });
-    }
-    function delTodo(id) {
-      todos = todos.filter(t => String(t.id) !== String(id));
-      renderTodos();
-      api({ action: 'deleteTodo', id });
-    }
-    function clearDone() {
-      if (!todos.some(t => t.done)) { toast('沒有已完成的事項', 'warn'); return; }
-      if (!confirm('確定清除所有已完成的事項？')) return;
-      const ids = todos.filter(t => t.done).map(t => t.id);
-      todos = todos.filter(t => !t.done);
-      renderTodos();
-      ids.forEach(id => api({ action: 'deleteTodo', id }));
-      toast('已清除完成項目', 'info');
-    }
-
-    // ═══════════════════════════════════════════
-    //  Toast
-    // ═══════════════════════════════════════════
-    function toast(msg, type = 'info') {
-      const c = document.getElementById('toast-container');
-      const el = document.createElement('div');
-      el.className = 'toast ' + type;
-      el.textContent = msg;
-      c.appendChild(el);
-      requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('show')));
-      setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 300); }, 2800);
-    }
-
-    // ═══════════════════════════════════════════
-    //  Clock
-    // ═══════════════════════════════════════════
-    function tick() {
-      const now = new Date();
-      document.getElementById('live-clock').textContent = now.toLocaleTimeString('zh-TW');
-      document.getElementById('date-chip').textContent = now.toLocaleDateString('zh-TW', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'short' });
-    }
-
-    // ═══════════════════════════════════════════
-    //  Keyboard
-    // ═══════════════════════════════════════════
-    document.addEventListener('keydown', e => {
-      if (e.target.id === 'new-emp' && e.key === 'Enter') addEmp();
-      // textarea: Ctrl+Enter 或 Cmd+Enter 新增
-      if (e.target.id === 'new-todo' && e.key === 'Enter' && (e.ctrlKey || e.metaKey)) addTodo();
-    });
-
-    // ═══════════════════════════════════════════
-    //  Init
-    // ═══════════════════════════════════════════
-    tick();
-    setInterval(tick, 1000);
-    pullState();
-    setInterval(pullState, POLL_MS);
-  </script>
-
-  <!-- ═══════════════════════════════════════
-     GOOGLE APPS SCRIPT 程式碼（請複製到 Apps Script 編輯器）
-
-function doGet(e) {
-  const ss    = SpreadsheetApp.getActiveSpreadsheet();
-  const p     = e.parameter;
-  const action = p.action || '';
-
-  // ── GET ALL ──
-  if (action === 'getAll') {
-    const empSheet  = getOrCreate(ss, '員工');
-    const todoSheet = getOrCreate(ss, '代辦');
-    const clockSheet= getOrCreate(ss, '打卡');
-
-    // 員工清單
-    const empData = empSheet.getDataRange().getValues();
-    const emps    = empData.slice(1).map(r => r[0]).filter(Boolean);
-
-    // 今日打卡狀態
-    const today   = new Date().toLocaleDateString('zh-TW');
-    const clkData = clockSheet.getDataRange().getValues();
-    const states  = {};
-    emps.forEach(name => { states[name] = { on: false, in: null, out: null }; });
-    clkData.slice(1).forEach(r => {
-      const [name, date, inT, outT] = r;
-      if (date === today && states[name] !== undefined) {
-        states[name].in  = inT  || null;
-        states[name].out = outT || null;
-        states[name].on  = !!inT && !outT;
-      }
-    });
-
-    // 今日 Todos
-    const todayStr = today;
-    const tdData   = todoSheet.getDataRange().getValues();
-    const todos    = tdData.slice(1)
-      .filter(r => r[0] === todayStr && !r[4])     // col E = deleted flag
-      .map(r => ({ id: r[1], text: decodeURIComponent(r[2]), done: r[3] === '1' }));
-
-    const out = JSON.stringify({ emps, states, todos });
-    return ContentService.createTextOutput(out).setMimeType(ContentService.MimeType.JSON);
-  }
-
-  // ── ADD EMP ──
-  if (action === 'addEmp') {
-    const sh = getOrCreate(ss, '員工');
-    if (!sh.getLastRow()) sh.appendRow(['姓名']);
-    sh.appendRow([p.name]);
-  }
-
-  // ── REMOVE EMP ──
-  if (action === 'removeEmp') {
-    const sh   = getOrCreate(ss, '員工');
-    const data = sh.getDataRange().getValues();
-    for (let i = 1; i < data.length; i++) {
-      if (data[i][0] === p.name) { sh.deleteRow(i + 1); break; }
-    }
-  }
-
-  // ── CLOCK IN ──
-  if (action === 'clockIn') {
-    const sh   = getOrCreate(ss, '打卡');
-    if (!sh.getLastRow()) sh.appendRow(['姓名','日期','上班','下班']);
-    const data = sh.getDataRange().getValues();
-    for (let i = 1; i < data.length; i++) {
-      if (data[i][0] === p.name && data[i][1] === p.date) {
-        sh.getRange(i+1,3).setValue(p.inTime);
-        sh.getRange(i+1,4).setValue('');
-        return ContentService.createTextOutput('updated');
-      }
-    }
-    sh.appendRow([p.name, p.date, p.inTime, '']);
-  }
-
-  // ── CLOCK OUT ──
-  if (action === 'clockOut') {
-    const sh   = getOrCreate(ss, '打卡');
-    const data = sh.getDataRange().getValues();
-    for (let i = 1; i < data.length; i++) {
-      if (data[i][0] === p.name && data[i][1] === p.date) {
-        sh.getRange(i+1,4).setValue(p.outTime);
-        return ContentService.createTextOutput('updated');
-      }
-    }
-    sh.appendRow([p.name, p.date, p.inTime, p.outTime]);
-  }
-
-  // ── ADD TODO ──
-  if (action === 'addTodo') {
-    const sh = getOrCreate(ss, '代辦');
-    if (!sh.getLastRow()) sh.appendRow(['日期','ID','內容','完成','刪除']);
-    const today = new Date().toLocaleDateString('zh-TW');
-    sh.appendRow([today, p.id, p.text, '0', '']);
-  }
-
-  // ── TOGGLE TODO ──
-  if (action === 'toggleTodo') {
-    const sh   = getOrCreate(ss, '代辦');
-    const data = sh.getDataRange().getValues();
-    for (let i = 1; i < data.length; i++) {
-      if (String(data[i][1]) === String(p.id)) {
-        sh.getRange(i+1,4).setValue(p.done);
-        break;
-      }
-    }
-  }
-
-  // ── DELETE TODO ──
-  if (action === 'deleteTodo') {
-    const sh   = getOrCreate(ss, '代辦');
-    const data = sh.getDataRange().getValues();
-    for (let i = 1; i < data.length; i++) {
-      if (String(data[i][1]) === String(p.id)) {
-        sh.getRange(i+1,5).setValue('deleted');
-        break;
-      }
-    }
-  }
-
-  return ContentService.createTextOutput('ok');
+           </button>`}
+      <button class="btn-remove" onclick="removeEmp('${esc(name)}')" aria-label="移除">×</button>`;
+    list.appendChild(row);
+  });
+  const badge = document.getElementById('in-badge');
+  badge.textContent = inCount + ' 人上班中';
+  badge.className   = 'pill' + (inCount > 0 ? ' active' : '');
 }
 
+function clockIn(name) {
+  const t = nowTime(), d = nowDate();
+  if (!states[name]) states[name] = {};
+  states[name] = { on: true, in: t, out: null };
+  renderEmps();
+  postAction({ action:'clockIn', name, date:d, inTime:t });
+  toast(name + '　上班打卡　' + t, 'success');
+}
+function clockOut(name) {
+  const t = nowTime(), d = nowDate();
+  if (!states[name]) states[name] = {};
+  const inT = states[name].in || '';
+  states[name] = { on: false, in: inT, out: t };
+  renderEmps();
+  postAction({ action:'clockOut', name, date:d, inTime:inT, outTime:t });
+  toast(name + '　下班打卡　' + t, 'info');
+}
+function addEmp() {
+  const inp = document.getElementById('new-emp');
+  const n = inp.value.trim();
+  if (!n) return;
+  if (emps.includes(n)) { toast('員工已存在', 'warn'); return; }
+  emps.push(n); renderEmps(); inp.value = '';
+  postAction({ action:'addEmp', name:n });
+}
+function removeEmp(name) {
+  if (!confirm('確定移除「' + name + '」？')) return;
+  emps = emps.filter(e => e !== name);
+  delete states[name];
+  renderEmps();
+  postAction({ action:'removeEmp', name });
+}
+
+// ══════════════════════════════════════════════
+//  Todo
+// ══════════════════════════════════════════════
+function renderTodos() {
+  const list = document.getElementById('todo-list');
+  list.innerHTML = '';
+  const total = todos.length;
+  const done  = todos.filter(t => t.done).length;
+  if (!total) {
+    list.innerHTML = '<div class="empty-hint">今天還沒有待辦事項</div>';
+  } else {
+    todos.forEach(t => {
+      const item = document.createElement('div');
+      item.className = 'todo-item' + (t.done ? ' done' : '');
+      item.innerHTML = `
+        <button class="check-btn ${t.done?'checked':''}" onclick="toggleTodo('${esc(t.id)}')" aria-label="切換完成"></button>
+        <span class="todo-text ${t.done?'done':''}">${esc(t.text)}</span>
+        <button class="btn-del" onclick="delTodo('${esc(t.id)}')" aria-label="刪除">×</button>`;
+      list.appendChild(item);
+    });
+  }
+  document.getElementById('todo-badge').textContent = total + ' 項';
+  document.getElementById('todo-stat').textContent  = total ? done + ' / ' + total + ' 完成' : '';
+  const pw = document.getElementById('progress-wrap');
+  pw.style.display = total ? 'block' : 'none';
+  if (total) {
+    const pct = Math.round(done / total * 100);
+    document.getElementById('progress-pct').textContent  = pct + '%';
+    document.getElementById('progress-fill').style.width = pct + '%';
+  }
+}
+
+function addTodo() {
+  const ta = document.getElementById('new-todo');
+  const txt = ta.value.trim();
+  if (!txt) return;
+  const id = uid();
+  todos.push({ id, text: txt, done: false });
+  renderTodos(); ta.value = '';
+  postAction({ action:'addTodo', id, text: txt });
+}
+function toggleTodo(id) {
+  const t = todos.find(x => x.id === id);
+  if (!t) return;
+  t.done = !t.done;
+  renderTodos();
+  postAction({ action:'toggleTodo', id, done: t.done });
+}
+function delTodo(id) {
+  todos = todos.filter(x => x.id !== id);
+  renderTodos();
+  postAction({ action:'deleteTodo', id });
+}
+function clearDone() {
+  if (!todos.some(t => t.done)) { toast('沒有已完成的事項', 'warn'); return; }
+  if (!confirm('確定清除所有已完成的事項？')) return;
+  const ids = todos.filter(t => t.done).map(t => t.id);
+  todos = todos.filter(t => !t.done);
+  renderTodos();
+  ids.forEach(id => postAction({ action:'deleteTodo', id }));
+  toast('已清除完成項目', 'info');
+}
+
+// ══════════════════════════════════════════════
+//  Toast
+// ══════════════════════════════════════════════
+function toast(msg, type='info') {
+  const c = document.getElementById('toast-container');
+  const el = document.createElement('div');
+  el.className = 'toast ' + type;
+  el.textContent = msg;
+  c.appendChild(el);
+  requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('show')));
+  setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 300); }, 2800);
+}
+
+// ══════════════════════════════════════════════
+//  Clock & keyboard
+// ══════════════════════════════════════════════
+function tick() {
+  const now = new Date();
+  document.getElementById('live-clock').textContent = now.toLocaleTimeString('zh-TW');
+  document.getElementById('date-chip').textContent  = now.toLocaleDateString('zh-TW',{year:'numeric',month:'long',day:'numeric',weekday:'short'});
+}
+document.addEventListener('keydown', e => {
+  if (e.target.id === 'new-emp'  && e.key === 'Enter') addEmp();
+  if (e.target.id === 'new-todo' && e.key === 'Enter' && (e.ctrlKey || e.metaKey)) addTodo();
+});
+
+tick(); setInterval(tick, 1000);
+pullState(); setInterval(pullState, POLL_MS);
+</script>
+
+<!--
+=================================================================
+  Google Apps Script 程式碼
+  請至 Google Sheet → 延伸功能 → Apps Script 貼上以下程式碼
+  部署為「網頁應用程式」，執行身分：我，存取權限：所有人
+=================================================================
+
+const SS_ID = SpreadsheetApp.getActiveSpreadsheet().getId();
+
+function doGet(e) {
+  const action = (e.parameter || {}).action || '';
+  if (action === 'getAll') {
+    return respond(getAllData());
+  }
+  return respond({ ok: true });
+}
+
+function doPost(e) {
+  const payload = JSON.parse(e.postData.contents);
+  const action  = payload.action || '';
+
+  if (action === 'addEmp')     addEmp(payload);
+  if (action === 'removeEmp')  removeEmp(payload);
+  if (action === 'clockIn')    clockIn(payload);
+  if (action === 'clockOut')   clockOut(payload);
+  if (action === 'addTodo')    addTodo(payload);
+  if (action === 'toggleTodo') toggleTodo(payload);
+  if (action === 'deleteTodo') deleteTodo(payload);
+
+  return respond({ ok: true });
+}
+
+// ── 讀取所有狀態 ──
+function getAllData() {
+  const ss   = SpreadsheetApp.openById(SS_ID);
+  const empSh  = getOrCreate(ss, '員工');
+  const clkSh  = getOrCreate(ss, '打卡');
+  const tdSh   = getOrCreate(ss, '代辦');
+
+  // 員工清單
+  const empRows = getRows(empSh);
+  const emps    = empRows.map(r => r[0]).filter(Boolean);
+
+  // 今日打卡
+  const today  = Utilities.formatDate(new Date(), 'Asia/Taipei', 'yyyy/MM/dd');
+  const clkRows= getRows(clkSh);
+  const states = {};
+  emps.forEach(n => { states[n] = { on: false, in: null, out: null }; });
+  clkRows.forEach(r => {
+    const [name, date, inT, outT] = r;
+    const dateStr = date instanceof Date
+      ? Utilities.formatDate(date, 'Asia/Taipei', 'yyyy/MM/dd')
+      : String(date);
+    if (dateStr === today && states[name] !== undefined) {
+      states[name].in  = inT  || null;
+      states[name].out = outT || null;
+      states[name].on  = !!inT && !outT;
+    }
+  });
+
+  // 今日 Todos（未刪除）
+  const tdRows = getRows(tdSh);
+  const todos  = tdRows
+    .filter(r => {
+      const d = r[0] instanceof Date
+        ? Utilities.formatDate(r[0], 'Asia/Taipei', 'yyyy/MM/dd')
+        : String(r[0]);
+      return d === today && !r[4];
+    })
+    .map(r => ({ id: String(r[1]), text: String(r[2]), done: r[3] === true || r[3] === 'true' || r[3] === '1' }));
+
+  return { emps, states, todos };
+}
+
+// ── 員工操作 ──
+function addEmp(p) {
+  const ss = SpreadsheetApp.openById(SS_ID);
+  const sh = getOrCreate(ss, '員工');
+  if (!sh.getLastRow()) sh.appendRow(['姓名']);
+  const rows = getRows(sh);
+  if (!rows.some(r => r[0] === p.name)) sh.appendRow([p.name]);
+}
+function removeEmp(p) {
+  const ss = SpreadsheetApp.openById(SS_ID);
+  const sh = getOrCreate(ss, '員工');
+  const data = sh.getDataRange().getValues();
+  for (let i = 1; i < data.length; i++) {
+    if (data[i][0] === p.name) { sh.deleteRow(i + 1); break; }
+  }
+}
+function clockIn(p) {
+  const ss = SpreadsheetApp.openById(SS_ID);
+  const sh = getOrCreate(ss, '打卡');
+  if (!sh.getLastRow()) sh.appendRow(['姓名','日期','上班','下班']);
+  const today = Utilities.formatDate(new Date(), 'Asia/Taipei', 'yyyy/MM/dd');
+  const data  = sh.getDataRange().getValues();
+  for (let i = 1; i < data.length; i++) {
+    const rowDate = data[i][1] instanceof Date
+      ? Utilities.formatDate(data[i][1], 'Asia/Taipei', 'yyyy/MM/dd')
+      : String(data[i][1]);
+    if (data[i][0] === p.name && rowDate === today) {
+      sh.getRange(i+1,3).setValue(p.inTime);
+      sh.getRange(i+1,4).setValue('');
+      return;
+    }
+  }
+  sh.appendRow([p.name, today, p.inTime, '']);
+}
+function clockOut(p) {
+  const ss = SpreadsheetApp.openById(SS_ID);
+  const sh = getOrCreate(ss, '打卡');
+  const today = Utilities.formatDate(new Date(), 'Asia/Taipei', 'yyyy/MM/dd');
+  const data  = sh.getDataRange().getValues();
+  for (let i = 1; i < data.length; i++) {
+    const rowDate = data[i][1] instanceof Date
+      ? Utilities.formatDate(data[i][1], 'Asia/Taipei', 'yyyy/MM/dd')
+      : String(data[i][1]);
+    if (data[i][0] === p.name && rowDate === today) {
+      sh.getRange(i+1,4).setValue(p.outTime);
+      return;
+    }
+  }
+  sh.appendRow([p.name, today, p.inTime || '', p.outTime]);
+}
+
+// ── Todo 操作 ──
+function addTodo(p) {
+  const ss = SpreadsheetApp.openById(SS_ID);
+  const sh = getOrCreate(ss, '代辦');
+  if (!sh.getLastRow()) sh.appendRow(['日期','ID','內容','完成','刪除']);
+  const today = Utilities.formatDate(new Date(), 'Asia/Taipei', 'yyyy/MM/dd');
+  sh.appendRow([today, p.id, p.text, false, '']);
+}
+function toggleTodo(p) {
+  const ss = SpreadsheetApp.openById(SS_ID);
+  const sh = getOrCreate(ss, '代辦');
+  const data = sh.getDataRange().getValues();
+  for (let i = 1; i < data.length; i++) {
+    if (String(data[i][1]) === String(p.id)) {
+      sh.getRange(i+1,4).setValue(p.done === true || p.done === 'true');
+      break;
+    }
+  }
+}
+function deleteTodo(p) {
+  const ss = SpreadsheetApp.openById(SS_ID);
+  const sh = getOrCreate(ss, '代辦');
+  const data = sh.getDataRange().getValues();
+  for (let i = 1; i < data.length; i++) {
+    if (String(data[i][1]) === String(p.id)) {
+      sh.getRange(i+1,5).setValue('deleted');
+      break;
+    }
+  }
+}
+
+// ── 工具 ──
 function getOrCreate(ss, name) {
   return ss.getSheetByName(name) || ss.insertSheet(name);
 }
+function getRows(sh) {
+  const last = sh.getLastRow();
+  if (last < 2) return [];
+  return sh.getRange(2, 1, last - 1, sh.getLastColumn()).getValues();
+}
+function respond(data) {
+  const output = ContentService.createTextOutput(JSON.stringify(data))
+    .setMimeType(ContentService.MimeType.JSON);
+  return output;
+}
 
-     ═══════════════════════════════════════ -->
-
+=================================================================
+-->
 </body>
-
 </html>
