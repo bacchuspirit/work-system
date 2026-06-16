@@ -9,125 +9,522 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
   :root {
-    --navy: #1E2235; --navy-3: #2F3550;
-    --white: #FFFFFF; --bg: #F5F6F8; --bg-2: #ECEEF2;
-    --mint: #00C48C; --mint-lt: #E6F9F3; --mint-dk: #009E70;
-    --coral: #F24E4E; --coral-lt: #FEF0F0;
-    --purple: #7B6EF6; --amber: #F59E0B;
-    --text-1: #1A1D2E; --text-2: #5A5E72; --text-3: #9A9DB0;
-    --border: #E2E4EC; --radius: 10px; --radius-lg: 14px;
+    --navy:    #1E2235;
+    --navy-2:  #252A40;
+    --navy-3:  #2F3550;
+    --white:   #FFFFFF;
+    --bg:      #F5F6F8;
+    --bg-2:    #ECEEF2;
+    --mint:    #00C48C;
+    --mint-lt: #E6F9F3;
+    --mint-dk: #009E70;
+    --coral:   #F24E4E;
+    --coral-lt:#FEF0F0;
+    --purple:  #7B6EF6;
+    --purple-lt:#F0EFFE;
+    --text-1:  #1A1D2E;
+    --text-2:  #5A5E72;
+    --text-3:  #9A9DB0;
+    --border:  #E2E4EC;
+    --radius:  10px;
+    --radius-lg: 14px;
   }
-  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text-1); min-height: 100vh; }
 
-  /* TOPBAR */
-  .topbar { background: var(--navy); padding: 0 28px; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
-  .topbar-left { display: flex; align-items: center; gap: 16px; }
-  .logo { display: flex; align-items: center; gap: 9px; text-decoration: none; }
-  .logo-icon { width: 30px; height: 30px; background: var(--mint); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+  html { font-size: 16px; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text-1);
+    min-height: 100vh;
+  }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    background: var(--navy);
+    padding: 0 28px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .topbar-left { display: flex; align-items: center; gap: 20px; }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    text-decoration: none;
+  }
+  .logo-icon {
+    width: 30px; height: 30px;
+    background: var(--mint);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
   .logo-icon svg { width: 16px; height: 16px; }
-  .logo-name { font-size: 15px; font-weight: 600; color: #fff; letter-spacing: -0.3px; }
-  .topbar-div { width: 1px; height: 20px; background: var(--navy-3); }
-  .date-chip { font-size: 12px; color: rgba(255,255,255,0.5); }
-  .sync-pill { font-size: 11px; font-family: 'DM Mono', monospace; padding: 3px 10px; border-radius: 20px; background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.45); transition: all .3s; white-space: nowrap; }
-  .sync-pill.ok    { background: rgba(0,196,140,0.2);  color: var(--mint); }
-  .sync-pill.busy  { background: rgba(123,110,246,0.2); color: #a89df8; }
-  .sync-pill.error { background: rgba(242,78,78,0.2);   color: #f08080; }
-  .clock-display { font-family: 'DM Mono', monospace; font-size: 20px; font-weight: 500; color: #fff; letter-spacing: 1px; }
-  .clock-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--mint); margin-right: 8px; animation: pulse 2s ease-in-out infinite; vertical-align: middle; position: relative; top: -1px; }
-  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
+  .logo-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: -0.3px;
+  }
+  .topbar-divider {
+    width: 1px; height: 20px;
+    background: var(--navy-3);
+  }
+  .date-chip {
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.2px;
+  }
+  .clock-display {
+    font-family: 'DM Mono', monospace;
+    font-size: 20px;
+    font-weight: 500;
+    color: #fff;
+    letter-spacing: 1px;
+    line-height: 1;
+  }
+  .clock-dot {
+    display: inline-block;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--mint);
+    margin-right: 8px;
+    animation: pulse 2s ease-in-out infinite;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+  }
+  @keyframes pulse {
+    0%,100% { opacity:1; transform:scale(1); }
+    50%      { opacity:0.4; transform:scale(0.7); }
+  }
 
-  /* LAYOUT */
-  .main { max-width: 1060px; margin: 0 auto; padding: 28px 24px 60px; }
-  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
-  @media(max-width:720px){ .grid{grid-template-columns:1fr} .topbar{padding:0 16px} .main{padding:20px 16px 60px} }
+  /* ── MAIN LAYOUT ── */
+  .main {
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 28px 24px 60px;
+  }
 
-  /* CARD */
-  .card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
-  .card-head { padding: 18px 20px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-  .card-title { font-size: 13px; font-weight: 600; color: var(--text-1); letter-spacing: .4px; text-transform: uppercase; display: flex; align-items: center; gap: 7px; }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+  @media (max-width: 720px) {
+    .grid { grid-template-columns: 1fr; }
+    .topbar { padding: 0 16px; }
+    .main { padding: 20px 16px 60px; }
+  }
+
+  /* ── SECTION CARDS ── */
+  .card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .card-head {
+    padding: 18px 20px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .card-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-1);
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
   .card-title svg { color: var(--text-3); }
-  .pill { font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 20px; background: var(--bg-2); color: var(--text-2); }
+  .pill {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 9px;
+    border-radius: 20px;
+    background: var(--bg-2);
+    color: var(--text-2);
+  }
   .pill.active { background: var(--mint-lt); color: var(--mint-dk); }
   .card-body { padding: 16px 20px 20px; }
 
-  /* INPUTS */
-  .add-row { display: flex; gap: 7px; margin-bottom: 14px; }
-  .add-row input { flex: 1; height: 38px; padding: 0 12px; font-size: 13px; font-family: 'Inter', sans-serif; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text-1); outline: none; transition: border-color .15s, background .15s; }
-  .add-row input:focus { border-color: var(--purple); background: var(--white); }
+  /* ── ADD ROW ── */
+  .add-row {
+    display: flex;
+    gap: 7px;
+    margin-bottom: 14px;
+  }
+  .add-row input {
+    flex: 1;
+    height: 38px;
+    padding: 0 12px;
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg);
+    color: var(--text-1);
+    outline: none;
+    transition: border-color .15s, background .15s;
+  }
+  .add-row input:focus {
+    border-color: var(--purple);
+    background: var(--white);
+  }
   .add-row input::placeholder { color: var(--text-3); }
-  .btn-add { width: 38px; height: 38px; border: none; border-radius: var(--radius); background: var(--navy); color: #fff; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .15s; }
+  .btn-add {
+    width: 38px; height: 38px;
+    border: none;
+    border-radius: var(--radius);
+    background: var(--navy);
+    color: #fff;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: background .15s;
+  }
   .btn-add:hover { background: var(--navy-3); }
 
-  /* EMPLOYEE */
+  /* ── EMPLOYEE ROWS ── */
   .emp-list { display: flex; flex-direction: column; gap: 8px; }
-  .emp-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--bg); transition: border-color .2s, background .2s; }
-  .emp-row.checked-in { border-color: #b2ecd8; background: var(--mint-lt); }
-  .avatar { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; flex-shrink: 0; }
+  .emp-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--bg);
+    transition: border-color .2s, background .2s;
+  }
+  .emp-row.checked-in {
+    border-color: #b2ecd8;
+    background: var(--mint-lt);
+  }
+  .avatar {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
   .emp-info { flex: 1; min-width: 0; }
-  .emp-name { font-size: 13px; font-weight: 500; color: var(--text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .emp-time { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-3); margin-top: 1px; }
+  .emp-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-1);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .emp-time {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-3);
+    margin-top: 1px;
+  }
   .emp-time.on { color: var(--mint-dk); }
-  .btn-clock { height: 30px; padding: 0 12px; border: none; border-radius: 7px; font-size: 12px; font-weight: 500; font-family: 'Inter', sans-serif; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; gap: 5px; transition: opacity .15s, transform .1s; }
-  .btn-clock:active { transform: scale(.96); }
-  .btn-in  { background: var(--mint);  color: #fff; } .btn-in:hover  { opacity: .88; }
-  .btn-out { background: var(--coral); color: #fff; } .btn-out:hover { opacity: .88; }
-  .btn-remove { background: none; border: none; color: var(--text-3); cursor: pointer; font-size: 16px; line-height: 1; padding: 2px; flex-shrink: 0; transition: color .15s; }
+  .btn-clock {
+    height: 30px;
+    padding: 0 12px;
+    border: none;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex; align-items: center; gap: 5px;
+    transition: opacity .15s, transform .1s;
+  }
+  .btn-clock:active { transform: scale(0.96); }
+  .btn-in  { background: var(--mint);  color: #fff; }
+  .btn-in:hover  { opacity: .88; }
+  .btn-out { background: var(--coral); color: #fff; }
+  .btn-out:hover { opacity: .88; }
+  .btn-remove {
+    background: none;
+    border: none;
+    color: var(--text-3);
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    padding: 2px;
+    flex-shrink: 0;
+    transition: color .15s;
+  }
   .btn-remove:hover { color: var(--coral); }
 
-  /* TODO */
-  .todo-add-wrap { margin-bottom: 14px; }
-  .todo-textarea { width: 100%; min-height: 64px; padding: 10px 12px; font-size: 13px; font-family: 'Inter', sans-serif; line-height: 1.6; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text-1); outline: none; resize: vertical; transition: border-color .15s, background .15s; }
-  .todo-textarea:focus { border-color: var(--purple); background: var(--white); }
-  .todo-textarea::placeholder { color: var(--text-3); }
-  .todo-add-btns { display: flex; justify-content: flex-end; margin-top: 6px; }
-  .btn-add-todo { height: 32px; padding: 0 14px; border: none; border-radius: var(--radius); background: var(--navy); color: #fff; font-size: 12px; font-weight: 500; font-family: 'Inter', sans-serif; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: background .15s; }
-  .btn-add-todo:hover { background: var(--navy-3); }
+  /* ── TODO ── */
   .todo-list { display: flex; flex-direction: column; gap: 6px; }
-  .todo-item { display: flex; align-items: flex-start; gap: 10px; padding: 9px 12px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--bg); }
-  .todo-item.done { opacity: .5; }
-  .check-btn { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--border); background: var(--white); cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: border-color .15s, background .15s; margin-top: 2px; }
+  .todo-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--bg);
+    transition: opacity .2s;
+  }
+  .todo-item.done { opacity: .55; }
+  .check-btn {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    background: var(--white);
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: border-color .15s, background .15s;
+    margin-top: 1px;
+  }
   .check-btn:hover { border-color: var(--mint); }
-  .check-btn.checked { background: var(--mint); border-color: var(--mint); }
-  .check-btn.checked::after { content: ''; width: 6px; height: 10px; border: 2px solid #fff; border-top: none; border-left: none; transform: rotate(42deg) translate(-1px,-1px); display: block; }
-  .todo-text { flex: 1; font-size: 13px; color: var(--text-1); line-height: 1.6; min-width: 0; white-space: pre-wrap; word-break: break-word; }
-  .todo-text.done { text-decoration: line-through; color: var(--text-3); }
-  .btn-del { background: none; border: none; color: var(--text-3); cursor: pointer; font-size: 15px; line-height: 1; padding: 2px; flex-shrink: 0; opacity: 0; transition: color .15s, opacity .15s; margin-top: 1px; }
+  .check-btn.checked {
+    background: var(--mint);
+    border-color: var(--mint);
+  }
+  .check-btn.checked::after {
+    content: '';
+    width: 6px; height: 10px;
+    border: 2px solid #fff;
+    border-top: none;
+    border-left: none;
+    transform: rotate(42deg) translate(-1px,-1px);
+    display: block;
+  }
+  .todo-text {
+    flex: 1;
+    font-size: 13px;
+    color: var(--text-1);
+    line-height: 1.5;
+    min-width: 0;
+    word-break: break-all;
+  }
+  .todo-text.done {
+    text-decoration: line-through;
+    color: var(--text-3);
+  }
+  .btn-del {
+    background: none;
+    border: none;
+    color: var(--text-3);
+    cursor: pointer;
+    font-size: 15px;
+    line-height: 1;
+    padding: 2px;
+    flex-shrink: 0;
+    opacity: 0;
+    transition: color .15s, opacity .15s;
+  }
   .todo-item:hover .btn-del { opacity: 1; }
   .btn-del:hover { color: var(--coral); }
-  .todo-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); }
-  .todo-stat { font-size: 12px; color: var(--text-3); }
-  .btn-clear { font-size: 12px; padding: 5px 11px; border-radius: 7px; border: 1px solid var(--border); background: transparent; color: var(--text-2); cursor: pointer; display: flex; align-items: center; gap: 5px; transition: background .15s, color .15s, border-color .15s; }
-  .btn-clear:hover { background: var(--coral-lt); border-color: #f9b0b0; color: var(--coral); }
-  .empty-hint { text-align: center; padding: 24px 0; font-size: 13px; color: var(--text-3); }
-  .progress-wrap { margin-top: 10px; }
-  .progress-label { font-size: 11px; color: var(--text-3); margin-bottom: 5px; display: flex; justify-content: space-between; }
-  .progress-bar { height: 4px; background: var(--bg-2); border-radius: 2px; overflow: hidden; }
-  .progress-fill { height: 100%; background: var(--mint); border-radius: 2px; transition: width .4s ease; }
 
-  /* TOAST */
-  .toast-container { position: fixed; bottom: 28px; right: 28px; display: flex; flex-direction: column; gap: 8px; z-index: 9999; pointer-events: none; }
-  .toast { background: var(--navy); color: #fff; font-size: 13px; padding: 10px 16px; border-radius: var(--radius); opacity: 0; transform: translateY(8px); transition: opacity .25s, transform .25s; max-width: 300px; }
+  .todo-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .todo-stat { font-size: 12px; color: var(--text-3); }
+  .btn-clear {
+    font-size: 12px;
+    padding: 5px 11px;
+    border-radius: 7px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-2);
+    cursor: pointer;
+    display: flex; align-items: center; gap: 5px;
+    transition: background .15s, color .15s, border-color .15s;
+  }
+  .btn-clear:hover {
+    background: var(--coral-lt);
+    border-color: #f9b0b0;
+    color: var(--coral);
+  }
+  .empty-hint {
+    text-align: center;
+    padding: 24px 0;
+    font-size: 13px;
+    color: var(--text-3);
+  }
+
+  /* ── PROGRESS BAR ── */
+  .progress-wrap { margin-top: 10px; }
+  .progress-bar {
+    height: 4px;
+    background: var(--bg-2);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--mint);
+    border-radius: 2px;
+    transition: width .4s ease;
+  }
+  .progress-label {
+    font-size: 11px;
+    color: var(--text-3);
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* ── SHEET SECTION ── */
+  .sheet-section {
+    margin-top: 20px;
+  }
+  .sheet-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 14px 20px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-2);
+    font-family: 'Inter', sans-serif;
+    transition: background .15s;
+  }
+  .sheet-toggle:hover { background: var(--bg); }
+  .sheet-toggle svg { color: var(--text-3); transition: transform .2s; }
+  .sheet-toggle.open svg { transform: rotate(180deg); }
+  .sheet-body {
+    display: none;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    padding: 20px;
+  }
+  .sheet-body.open { display: block; }
+  .sheet-toggle.open {
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  }
+  .sheet-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .sheet-row input {
+    flex: 1;
+    height: 38px;
+    padding: 0 12px;
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg);
+    color: var(--text-1);
+    outline: none;
+    transition: border-color .15s;
+  }
+  .sheet-row input:focus { border-color: var(--purple); background: var(--white); }
+  .sheet-row input::placeholder { color: var(--text-3); }
+  .btn-save {
+    height: 38px;
+    padding: 0 16px;
+    border: none;
+    border-radius: var(--radius);
+    background: var(--navy);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background .15s;
+  }
+  .btn-save:hover { background: var(--navy-3); }
+  .code-block {
+    background: var(--navy);
+    color: #a8d9b8;
+    font-family: 'DM Mono', monospace;
+    font-size: 11.5px;
+    line-height: 1.7;
+    padding: 14px 16px;
+    border-radius: var(--radius);
+    white-space: pre;
+    overflow-x: auto;
+    margin-bottom: 12px;
+  }
+  .sheet-steps {
+    font-size: 12px;
+    color: var(--text-2);
+    line-height: 1.8;
+    padding-left: 16px;
+  }
+  .sheet-steps li { margin-bottom: 2px; }
+
+  /* ── TOAST ── */
+  .toast-container {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 9999;
+    pointer-events: none;
+  }
+  .toast {
+    background: var(--navy);
+    color: #fff;
+    font-size: 13px;
+    padding: 10px 16px;
+    border-radius: var(--radius);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity .25s, transform .25s;
+    max-width: 280px;
+  }
   .toast.show { opacity: 1; transform: translateY(0); }
   .toast.success { border-left: 3px solid var(--mint); }
   .toast.info    { border-left: 3px solid var(--purple); }
-  .toast.warn    { border-left: 3px solid var(--amber); }
-  .toast.error   { border-left: 3px solid var(--coral); }
+  .toast.warn    { border-left: 3px solid #f0a030; }
 </style>
 </head>
 <body>
 
+<!-- TOPBAR -->
 <header class="topbar">
   <div class="topbar-left">
     <a class="logo" href="#">
       <div class="logo-icon">
-        <svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1.2" fill="white"/><rect x="9" y="2" width="5" height="5" rx="1.2" fill="white" opacity=".6"/><rect x="2" y="9" width="5" height="5" rx="1.2" fill="white" opacity=".6"/><rect x="9" y="9" width="5" height="5" rx="1.2" fill="white" opacity=".35"/></svg>
+        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="5" height="5" rx="1.2" fill="white"/>
+          <rect x="9" y="2" width="5" height="5" rx="1.2" fill="white" opacity=".6"/>
+          <rect x="2" y="9" width="5" height="5" rx="1.2" fill="white" opacity=".6"/>
+          <rect x="9" y="9" width="5" height="5" rx="1.2" fill="white" opacity=".35"/>
+        </svg>
       </div>
       <span class="logo-name">工作日系統</span>
     </a>
-    <div class="topbar-div"></div>
+    <div class="topbar-divider"></div>
     <span class="date-chip" id="date-chip"></span>
-    <span class="sync-pill busy" id="sync-pill">⟳ 連線中</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <span class="clock-dot"></span>
@@ -135,25 +532,29 @@
   </div>
 </header>
 
+<!-- MAIN -->
 <main class="main">
   <div class="grid">
+
+    <!-- LEFT: ATTENDANCE -->
     <div class="card">
       <div class="card-head">
         <span class="card-title">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="7" r="4"/><path d="M5.5 20a7 7 0 0 1 13 0"/></svg>
           員工打卡
         </span>
-        <span class="pill" id="in-badge">0 人上班中</span>
+        <span class="pill active" id="in-badge">0 人上班中</span>
       </div>
       <div class="card-body">
         <div class="add-row">
-          <input type="text" id="new-emp" placeholder="輸入員工姓名新增…" />
-          <button class="btn-add" onclick="addEmp()" aria-label="新增">+</button>
+          <input type="text" id="new-emp" placeholder="輸入員工姓名新增..." />
+          <button class="btn-add" onclick="addEmp()" aria-label="新增員工">+</button>
         </div>
-        <div class="emp-list" id="emp-list"><div class="empty-hint">連線中…</div></div>
+        <div class="emp-list" id="emp-list"></div>
       </div>
     </div>
 
+    <!-- RIGHT: TODO -->
     <div class="card">
       <div class="card-head">
         <span class="card-title">
@@ -163,18 +564,16 @@
         <span class="pill" id="todo-badge">0 項</span>
       </div>
       <div class="card-body">
-        <div class="todo-add-wrap">
-          <textarea class="todo-textarea" id="new-todo" placeholder="輸入待辦事項（可換行填入多行內容）…" rows="3"></textarea>
-          <div class="todo-add-btns">
-            <button class="btn-add-todo" onclick="addTodo()">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              新增事項
-            </button>
-          </div>
+        <div class="add-row">
+          <input type="text" id="new-todo" placeholder="輸入待辦事項，按 Enter 新增..." />
+          <button class="btn-add" onclick="addTodo()" aria-label="新增待辦">+</button>
         </div>
-        <div id="todo-list" class="todo-list"><div class="empty-hint">連線中…</div></div>
+        <div id="todo-list" class="todo-list"></div>
         <div class="progress-wrap" id="progress-wrap" style="display:none">
-          <div class="progress-label"><span>完成進度</span><span id="progress-pct">0%</span></div>
+          <div class="progress-label">
+            <span id="progress-text">完成進度</span>
+            <span id="progress-pct">0%</span>
+          </div>
           <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
         </div>
         <div class="todo-footer">
@@ -186,379 +585,263 @@
         </div>
       </div>
     </div>
+
+  </div>
+
+  <!-- GOOGLE SHEET SECTION -->
+  <div class="sheet-section">
+    <button class="sheet-toggle" id="sheet-toggle" onclick="toggleSheet()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+      連接 Google Sheet（打卡紀錄自動同步）
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="margin-left:auto"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="sheet-body" id="sheet-body">
+      <div class="sheet-row">
+        <input type="text" id="sheet-url" placeholder="貼上 Google Apps Script 部署網址..." />
+        <button class="btn-save" onclick="saveSheetUrl()">儲存</button>
+      </div>
+      <p style="font-size:12px;color:var(--text-2);margin-bottom:10px;font-weight:500">設定步驟</p>
+      <ol class="sheet-steps">
+        <li>開啟你的 Google Sheet → 點上方「延伸功能」→「Apps Script」</li>
+        <li>貼上下方腳本，點「儲存」</li>
+        <li>點「部署」→「新增部署項目」→ 類型選「網頁應用程式」</li>
+        <li>執行身分：我；存取權限：所有人 → 部署 → 複製網址</li>
+        <li>將網址貼到上方輸入欄，點「儲存」</li>
+      </ol>
+      <div class="code-block" id="script-code">function doGet(e) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const { name, date, in: inTime, out } = e.parameter;
+
+  if (!sheet.getLastRow() || sheet.getRange(1,1).getValue() === '') {
+    sheet.appendRow(['姓名', '日期', '上班時間', '下班時間']);
+  }
+
+  const data = sheet.getDataRange().getValues();
+  for (let i = 1; i < data.length; i++) {
+    if (data[i][0] == name && data[i][1] == date) {
+      if (out) sheet.getRange(i+1, 4).setValue(out);
+      return ContentService.createTextOutput('updated');
+    }
+  }
+
+  sheet.appendRow([name, date, inTime, out || '']);
+  return ContentService.createTextOutput('ok');
+}</div>
+      <button class="btn-save" onclick="copyScript()" style="background:var(--bg);color:var(--text-1);border:1px solid var(--border);margin-top:4px">
+        複製腳本程式碼
+      </button>
+    </div>
   </div>
 </main>
 
+<!-- TOAST -->
 <div class="toast-container" id="toast-container"></div>
 
 <script>
-// ═══════════════════════════════════════════════
-//  JSONBin 設定（已內建，無需手動設定）
-// ═══════════════════════════════════════════════
-const JB_KEY  = '$2a$10$llUzLpCGmMwxLbBfP34j3O2He8.yAJusTxj.3IRblOK4iCwktRjL2';
-const JB_API  = 'https://api.jsonbin.io/v3';
-const BIN_NAME = 'WorkdaySystem';
-const LS_BIN  = 'wds_bin_id_v2';
-const POLL_MS = 6000;
+  const EMP_PALETTES = [
+    ['#EEF0FF','#5A52D5'],['#E6F9F3','#009E70'],['#FFF0EC','#D84A1B'],
+    ['#FFF5E6','#C47A15'],['#F9EEFF','#8B3FD4'],['#E8F5FF','#1A6FB8'],
+    ['#FFEEF5','#C4306A'],['#F0FFF4','#276E3C']
+  ];
+  let emps   = JSON.parse(localStorage.getItem('wds_emps')   || '["王小明","李美華","陳大偉","林志玲"]');
+  let states = JSON.parse(localStorage.getItem('wds_states') || '{}');
+  let todos  = JSON.parse(localStorage.getItem('wds_todos')  || '[]');
 
-let BIN_ID   = localStorage.getItem(LS_BIN) || '';
-let data     = { emps: [], clocks: {}, todos: {} };
-let isSaving = false;
-let pollTimer = null;
+  function persist() {
+    localStorage.setItem('wds_emps',   JSON.stringify(emps));
+    localStorage.setItem('wds_states', JSON.stringify(states));
+    localStorage.setItem('wds_todos',  JSON.stringify(todos));
+  }
 
-// ═══════════════════════════════════════════════
-//  JSONBin REST API
-// ═══════════════════════════════════════════════
-const HDR = () => ({
-  'Content-Type': 'application/json',
-  'X-Master-Key': JB_KEY,
-  'X-Bin-Versioning': 'false'
-});
+  function initials(n) { return n.length >= 2 ? n.slice(-2) : n; }
 
-async function jbCreate() {
-  const res = await fetch(JB_API + '/b', {
-    method: 'POST',
-    headers: { ...HDR(), 'X-Bin-Name': BIN_NAME },
-    body: JSON.stringify({ emps: [], clocks: {}, todos: {} })
-  });
-  if (!res.ok) throw new Error('建立 Bin 失敗：' + res.status);
-  const j = await res.json();
-  return j.metadata.id;
-}
+  /* ── RENDER EMPLOYEES ── */
+  function renderEmps() {
+    const list = document.getElementById('emp-list');
+    list.innerHTML = '';
+    let inCount = 0;
+    emps.forEach((name, i) => {
+      const s = states[name] || { on: false, in: null, out: null };
+      if (s.on) inCount++;
+      const [bg, fg] = EMP_PALETTES[i % EMP_PALETTES.length];
 
-async function jbRead() {
-  const res = await fetch(JB_API + '/b/' + BIN_ID + '/latest', {
-    headers: { 'X-Master-Key': JB_KEY, 'X-Bin-Meta': 'false' }
-  });
-  if (!res.ok) throw new Error('讀取失敗：' + res.status);
-  return res.json();
-}
+      const row = document.createElement('div');
+      row.className = 'emp-row' + (s.on ? ' checked-in' : '');
 
-async function jbWrite(payload) {
-  const res = await fetch(JB_API + '/b/' + BIN_ID, {
-    method: 'PUT',
-    headers: HDR(),
-    body: JSON.stringify(payload)
-  });
-  if (!res.ok) throw new Error('寫入失敗：' + res.status);
-}
+      let timeStr = '尚未打卡';
+      let timeClass = '';
+      if (s.on  && s.in)  { timeStr = '上班中  ' + s.in; timeClass = 'on'; }
+      else if (s.in)       { timeStr = s.in + (s.out ? '  →  ' + s.out : ''); }
 
-// ═══════════════════════════════════════════════
-//  初始化：取得或建立 Bin
-// ═══════════════════════════════════════════════
-async function init() {
-  setSyncUI('busy', '⟳ 連線中');
-  try {
-    if (!BIN_ID) {
-      // 嘗試找已存在的同名 Bin
-      const listRes = await fetch(JB_API + '/b', {
-        headers: { 'X-Master-Key': JB_KEY }
-      });
-      if (listRes.ok) {
-        const bins = await listRes.json();
-        if (Array.isArray(bins)) {
-          const found = bins.find(b => b?.record?.metadata?.name === BIN_NAME);
-          if (found) BIN_ID = found.record.metadata.id;
+      row.innerHTML = `
+        <div class="avatar" style="background:${bg};color:${fg}">${initials(name)}</div>
+        <div class="emp-info">
+          <div class="emp-name">${esc(name)}</div>
+          <div class="emp-time ${timeClass}">${timeStr}</div>
+        </div>
+        ${s.on
+          ? `<button class="btn-clock btn-out" onclick="clock('${esc(name)}',false)">
+               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+               下班
+             </button>`
+          : `<button class="btn-clock btn-in" onclick="clock('${esc(name)}',true)">
+               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+               上班
+             </button>`
         }
-      }
-      // 還是找不到就新建
-      if (!BIN_ID) BIN_ID = await jbCreate();
-      localStorage.setItem(LS_BIN, BIN_ID);
+        <button class="btn-remove" onclick="removeEmp(${i})" aria-label="移除 ${esc(name)}">×</button>
+      `;
+      list.appendChild(row);
+    });
+    const badge = document.getElementById('in-badge');
+    badge.textContent = inCount + ' 人上班中';
+    badge.className = 'pill' + (inCount > 0 ? ' active' : '');
+  }
+
+  /* ── CLOCK ACTION ── */
+  function clock(name, goIn) {
+    const now  = new Date();
+    const time = now.toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const date = now.toLocaleDateString('zh-TW');
+    if (!states[name]) states[name] = { on: false, in: null, out: null };
+    if (goIn) {
+      states[name] = { on: true, in: time, out: null };
+      sendSheet(name, date, time, '');
+      toast(name + '  上班打卡  ' + time, 'success');
+    } else {
+      states[name].on  = false;
+      states[name].out = time;
+      sendSheet(name, date, states[name].in, time);
+      toast(name + '  下班打卡  ' + time, 'info');
+    }
+    persist(); renderEmps();
+  }
+
+  function sendSheet(name, date, inT, outT) {
+    const url = localStorage.getItem('wds_sheet');
+    if (!url) return;
+    fetch(url + '?' + new URLSearchParams({ name, date, in: inT, out: outT }), { mode: 'no-cors' }).catch(() => {});
+  }
+
+  function addEmp() {
+    const inp = document.getElementById('new-emp');
+    const n = inp.value.trim();
+    if (!n) return;
+    if (emps.includes(n)) { toast('員工已存在', 'warn'); return; }
+    emps.push(n); persist(); inp.value = ''; renderEmps();
+  }
+
+  function removeEmp(i) {
+    if (!confirm('確定移除「' + emps[i] + '」？')) return;
+    delete states[emps[i]]; emps.splice(i, 1); persist(); renderEmps();
+  }
+
+  /* ── RENDER TODOS ── */
+  function renderTodos() {
+    const list = document.getElementById('todo-list');
+    list.innerHTML = '';
+    const total = todos.length;
+    const done  = todos.filter(t => t.done).length;
+
+    if (!total) {
+      list.innerHTML = '<div class="empty-hint">今天還沒有待辦事項</div>';
+    } else {
+      todos.forEach((t, i) => {
+        const item = document.createElement('div');
+        item.className = 'todo-item' + (t.done ? ' done' : '');
+        item.innerHTML = `
+          <button class="check-btn ${t.done ? 'checked' : ''}" onclick="toggleTodo(${i})" aria-label="切換完成"></button>
+          <span class="todo-text ${t.done ? 'done' : ''}">${esc(t.text)}</span>
+          <button class="btn-del" onclick="delTodo(${i})" aria-label="刪除">×</button>
+        `;
+        list.appendChild(item);
+      });
     }
 
-    // 讀取資料
-    await syncFromServer();
-    // 啟動輪詢
-    clearInterval(pollTimer);
-    pollTimer = setInterval(poll, POLL_MS);
-  } catch(e) {
-    setSyncUI('error', '✕ 連線失敗');
-    toast('連線失敗，5 秒後重試…', 'error');
-    setTimeout(init, 5000);
-  }
-}
+    document.getElementById('todo-badge').textContent = total + ' 項';
+    document.getElementById('todo-stat').textContent  = total ? done + ' / ' + total + ' 完成' : '';
 
-// ═══════════════════════════════════════════════
-//  同步
-// ═══════════════════════════════════════════════
-async function syncFromServer() {
-  const fresh = await jbRead();
-  data = {
-    emps:   Array.isArray(fresh.emps)            ? fresh.emps   : [],
-    clocks: fresh.clocks && typeof fresh.clocks === 'object' ? fresh.clocks : {},
-    todos:  fresh.todos  && typeof fresh.todos  === 'object' ? fresh.todos  : {}
-  };
-  renderAll();
-  setSyncUI('ok', '● 已同步');
-}
-
-async function poll() {
-  if (isSaving) return;
-  try {
-    await syncFromServer();
-  } catch(e) {
-    setSyncUI('error', '✕ 同步失敗');
-  }
-}
-
-async function save() {
-  isSaving = true;
-  setSyncUI('busy', '⟳ 儲存中');
-  try {
-    await jbWrite(data);
-    setSyncUI('ok', '● 已同步');
-  } catch(e) {
-    setSyncUI('error', '✕ 儲存失敗');
-    toast('儲存失敗，請重試', 'error');
-  } finally {
-    isSaving = false;
-  }
-}
-
-// ═══════════════════════════════════════════════
-//  工具
-// ═══════════════════════════════════════════════
-function todayKey() {
-  return new Date().toISOString().slice(0,10).replace(/-/g,'');
-}
-function nowTime() {
-  return new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-}
-function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-}
-function setSyncUI(state, msg) {
-  const el = document.getElementById('sync-pill');
-  el.className = 'sync-pill ' + state;
-  el.textContent = msg;
-}
-function toast(msg, type='info') {
-  const c = document.getElementById('toast-container');
-  const el = document.createElement('div');
-  el.className = 'toast ' + type;
-  el.textContent = msg;
-  c.appendChild(el);
-  requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('show')));
-  setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 300); }, 3000);
-}
-
-// ═══════════════════════════════════════════════
-//  渲染
-// ═══════════════════════════════════════════════
-const PALETTES = [
-  ['#EEF0FF','#5A52D5'],['#E6F9F3','#009E70'],['#FFF0EC','#D84A1B'],
-  ['#FFF5E6','#C47A15'],['#F9EEFF','#8B3FD4'],['#E8F5FF','#1A6FB8'],
-  ['#FFEEF5','#C4306A'],['#F0FFF4','#276E3C']
-];
-
-function renderAll() { renderEmps(); renderTodos(); }
-function initials(n) { return n.length >= 2 ? n.slice(-2) : n; }
-
-function renderEmps() {
-  const list   = document.getElementById('emp-list');
-  const emps   = data.emps || [];
-  const today  = todayKey();
-  const clocks = (data.clocks && data.clocks[today]) || {};
-  list.innerHTML = '';
-  let inCount = 0;
-
-  if (!emps.length) {
-    list.innerHTML = '<div class="empty-hint">尚未新增員工</div>';
-    setEmpBadge(0); return;
+    const pw = document.getElementById('progress-wrap');
+    pw.style.display = total ? 'block' : 'none';
+    if (total) {
+      const pct = Math.round(done / total * 100);
+      document.getElementById('progress-pct').textContent  = pct + '%';
+      document.getElementById('progress-fill').style.width = pct + '%';
+    }
   }
 
-  emps.forEach((name, i) => {
-    const s = clocks[name] || { on: false, in: null, out: null };
-    if (s.on) inCount++;
-    const [bg, fg] = PALETTES[i % PALETTES.length];
-    let timeStr = '尚未打卡', timeCls = '';
-    if (s.on && s.in)  { timeStr = '上班中　' + s.in; timeCls = 'on'; }
-    else if (s.in)     { timeStr = s.in + (s.out ? '　→　' + s.out : ''); }
-    const en = esc(name);
-    const row = document.createElement('div');
-    row.className = 'emp-row' + (s.on ? ' checked-in' : '');
-    row.innerHTML = `
-      <div class="avatar" style="background:${bg};color:${fg}">${initials(name)}</div>
-      <div class="emp-info">
-        <div class="emp-name">${en}</div>
-        <div class="emp-time ${timeCls}">${timeStr}</div>
-      </div>
-      ${s.on
-        ? `<button class="btn-clock btn-out" onclick="clockOut('${en}')">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-            下班</button>`
-        : `<button class="btn-clock btn-in" onclick="clockIn('${en}')">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-            上班</button>`}
-      <button class="btn-remove" onclick="removeEmp('${en}')" aria-label="移除">×</button>`;
-    list.appendChild(row);
+  function addTodo() {
+    const inp = document.getElementById('new-todo');
+    const t = inp.value.trim();
+    if (!t) return;
+    todos.push({ text: t, done: false }); persist(); inp.value = ''; renderTodos();
+  }
+
+  function toggleTodo(i) { todos[i].done = !todos[i].done; persist(); renderTodos(); }
+
+  function delTodo(i) { todos.splice(i, 1); persist(); renderTodos(); }
+
+  function clearDone() {
+    if (!todos.some(t => t.done)) { toast('沒有已完成的事項', 'warn'); return; }
+    if (!confirm('確定清除所有已完成的事項？')) return;
+    todos = todos.filter(t => !t.done); persist(); renderTodos(); toast('已清除完成項目', 'info');
+  }
+
+  /* ── SHEET ── */
+  function toggleSheet() {
+    const toggle = document.getElementById('sheet-toggle');
+    const body   = document.getElementById('sheet-body');
+    toggle.classList.toggle('open');
+    body.classList.toggle('open');
+  }
+
+  function saveSheetUrl() {
+    const url = document.getElementById('sheet-url').value.trim();
+    localStorage.setItem('wds_sheet', url);
+    toast('Google Sheet URL 已儲存', 'success');
+  }
+
+  function copyScript() {
+    const code = document.getElementById('script-code').textContent;
+    navigator.clipboard.writeText(code).then(() => toast('已複製腳本程式碼', 'success'));
+  }
+
+  /* ── TOAST ── */
+  function toast(msg, type = 'info') {
+    const container = document.getElementById('toast-container');
+    const el = document.createElement('div');
+    el.className = 'toast ' + type;
+    el.textContent = msg;
+    container.appendChild(el);
+    requestAnimationFrame(() => { requestAnimationFrame(() => el.classList.add('show')); });
+    setTimeout(() => {
+      el.classList.remove('show');
+      setTimeout(() => el.remove(), 300);
+    }, 2600);
+  }
+
+  /* ── CLOCK ── */
+  function tick() {
+    const now  = new Date();
+    document.getElementById('live-clock').textContent = now.toLocaleTimeString('zh-TW');
+    document.getElementById('date-chip').textContent  = now.toLocaleDateString('zh-TW', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'short' });
+  }
+
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  /* ── KEYBOARD ── */
+  document.addEventListener('keydown', e => {
+    if (e.target.id === 'new-emp'  && e.key === 'Enter') addEmp();
+    if (e.target.id === 'new-todo' && e.key === 'Enter') addTodo();
   });
-  setEmpBadge(inCount);
-}
 
-function setEmpBadge(n) {
-  const b = document.getElementById('in-badge');
-  b.textContent = n + ' 人上班中';
-  b.className = 'pill' + (n > 0 ? ' active' : '');
-}
-
-function renderTodos() {
-  const list  = document.getElementById('todo-list');
-  const today = todayKey();
-  const items = (data.todos && data.todos[today]) || [];
-  list.innerHTML = '';
-  const total = items.length;
-  const done  = items.filter(t => t.done).length;
-
-  if (!total) {
-    list.innerHTML = '<div class="empty-hint">今天還沒有待辦事項</div>';
-  } else {
-    items.forEach(t => {
-      const item = document.createElement('div');
-      item.className = 'todo-item' + (t.done ? ' done' : '');
-      item.innerHTML = `
-        <button class="check-btn ${t.done?'checked':''}" onclick="toggleTodo('${esc(t.id)}')" aria-label="切換完成"></button>
-        <span class="todo-text ${t.done?'done':''}">${esc(t.text)}</span>
-        <button class="btn-del" onclick="delTodo('${esc(t.id)}')" aria-label="刪除">×</button>`;
-      list.appendChild(item);
-    });
-  }
-  document.getElementById('todo-badge').textContent = total + ' 項';
-  document.getElementById('todo-stat').textContent  = total ? done + ' / ' + total + ' 完成' : '';
-  const pw = document.getElementById('progress-wrap');
-  pw.style.display = total ? 'block' : 'none';
-  if (total) {
-    const pct = Math.round(done / total * 100);
-    document.getElementById('progress-pct').textContent  = pct + '%';
-    document.getElementById('progress-fill').style.width = pct + '%';
-  }
-}
-
-// ═══════════════════════════════════════════════
-//  員工操作
-// ═══════════════════════════════════════════════
-async function addEmp() {
-  const inp = document.getElementById('new-emp');
-  const n = inp.value.trim();
-  if (!n) return;
-  if ((data.emps||[]).includes(n)) { toast('員工已存在', 'warn'); return; }
-  inp.value = '';
-  data.emps = [...(data.emps||[]), n];
-  renderEmps();
-  await save();
-}
-
-async function removeEmp(name) {
-  if (!confirm('確定移除「' + name + '」？')) return;
-  data.emps = (data.emps||[]).filter(e => e !== name);
-  renderEmps();
-  await save();
-}
-
-// ── 寫入 Google Sheet ────────────────────────────────
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbyUTNmo9bAMfMgtrsNeX-yoDdG9pk30WNY6J-QiozGr-JEqs_7qas3-cO63-0t8YWT-Pg/exec';
-
-function pingSheet(name, inTime, outTime) {
-  // fetch no-cors + application/x-www-form-urlencoded
-  // Apps Script doPost 從 e.postData.contents 解析參數
-  const body = new URLSearchParams({ name, inTime, outTime }).toString();
-  fetch(GAS_URL, {
-    method:  'POST',
-    mode:    'no-cors',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body:    body
-  }).catch(() => {});
-}
-
-async function clockIn(name) {
-  const t = nowTime(), d = todayKey();
-  if (!data.clocks)    data.clocks    = {};
-  if (!data.clocks[d]) data.clocks[d] = {};
-  data.clocks[d][name] = { on: true, in: t, out: null };
-  renderEmps();
-  await save();
-  pingSheet(name, t, '');          // outTime 空 → Apps Script 判斷為上班
-  toast(name + '　上班打卡　' + t, 'success');
-}
-
-async function clockOut(name) {
-  const t = nowTime(), d = todayKey();
-  if (!data.clocks)    data.clocks    = {};
-  if (!data.clocks[d]) data.clocks[d] = {};
-  const prev = data.clocks[d][name] || {};
-  const inT  = prev.in || t;
-  data.clocks[d][name] = { on: false, in: inT, out: t };
-  renderEmps();
-  await save();
-  pingSheet(name, inT, t);         // inTime + outTime 都帶 → Apps Script 判斷為下班
-  toast(name + '　下班打卡　' + t, 'info');
-}
-
-// ═══════════════════════════════════════════════
-//  Todo 操作
-// ═══════════════════════════════════════════════
-async function addTodo() {
-  const ta  = document.getElementById('new-todo');
-  const txt = ta.value.trim();
-  if (!txt) return;
-  ta.value = '';
-  const d  = todayKey();
-  const id = 't' + Date.now().toString(36);
-  if (!data.todos)    data.todos    = {};
-  if (!data.todos[d]) data.todos[d] = [];
-  data.todos[d].push({ id, text: txt, done: false });
-  renderTodos();
-  await save();
-}
-
-async function toggleTodo(id) {
-  const d = todayKey();
-  const items = (data.todos && data.todos[d]) || [];
-  const t = items.find(x => x.id === id);
-  if (!t) return;
-  t.done = !t.done;
-  renderTodos();
-  await save();
-}
-
-async function delTodo(id) {
-  const d = todayKey();
-  if (!data.todos || !data.todos[d]) return;
-  data.todos[d] = data.todos[d].filter(x => x.id !== id);
-  renderTodos();
-  await save();
-}
-
-async function clearDone() {
-  const d     = todayKey();
-  const items = (data.todos && data.todos[d]) || [];
-  if (!items.some(t => t.done)) { toast('沒有已完成的事項', 'warn'); return; }
-  if (!confirm('確定清除所有已完成的事項？')) return;
-  data.todos[d] = items.filter(t => !t.done);
-  renderTodos();
-  await save();
-  toast('已清除完成項目', 'info');
-}
-
-// ═══════════════════════════════════════════════
-//  時鐘 & 鍵盤
-// ═══════════════════════════════════════════════
-function tick() {
-  const now = new Date();
-  document.getElementById('live-clock').textContent = now.toLocaleTimeString('zh-TW');
-  document.getElementById('date-chip').textContent  = now.toLocaleDateString('zh-TW',{year:'numeric',month:'long',day:'numeric',weekday:'short'});
-}
-document.addEventListener('keydown', e => {
-  if (e.target.id === 'new-emp'  && e.key === 'Enter') addEmp();
-  if (e.target.id === 'new-todo' && e.key === 'Enter' && (e.ctrlKey || e.metaKey)) addTodo();
-});
-
-// ═══════════════════════════════════════════════
-//  啟動
-// ═══════════════════════════════════════════════
-tick();
-setInterval(tick, 1000);
-init();
+  /* ── INIT ── */
+  const savedUrl = localStorage.getItem('wds_sheet');
+  if (savedUrl) document.getElementById('sheet-url').value = savedUrl;
+  tick(); setInterval(tick, 1000);
+  renderEmps(); renderTodos();
 </script>
 </body>
 </html>
