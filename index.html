@@ -482,6 +482,7 @@
     </a>
     <div class="topbar-divider"></div>
     <span class="date-chip" id="date-chip"></span>
+    <span id="sync-dot" title="代辦同步中" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#f59e0b;margin-left:2px;vertical-align:middle;transition:background .4s"></span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <span class="clock-dot"></span>
@@ -562,12 +563,87 @@
   ];
   let emps   = JSON.parse(localStorage.getItem('wds_emps')   || '["王小明","李美華","陳大偉","林志玲"]');
   let states = JSON.parse(localStorage.getItem('wds_states') || '{}');
-  let todos  = JSON.parse(localStorage.getItem('wds_todos')  || '[]');
+  let todos  = [];   // 由 JSONBin 管理，不用 localStorage
 
-  function persist() {
+  // 員工、打卡狀態仍存 localStorage（本機即可）
+  function persistLocal() {
     localStorage.setItem('wds_emps',   JSON.stringify(emps));
     localStorage.setItem('wds_states', JSON.stringify(states));
-    localStorage.setItem('wds_todos',  JSON.stringify(todos));
+  }
+
+  // ── JSONBin 設定 ────────────────────────────────────────
+  const JB_KEY  = '$2a$10$llUzLpCGmMwxLbBfP34j3O2He8.yAJusTxj.3IRblOK4iCwktRjL2';
+  const JB_API  = 'https://api.jsonbin.io/v3';
+  const JB_NAME = 'WdsTodos';
+  const LS_BIN  = 'wds_jb_bin_todos';
+  let   BIN_ID  = localStorage.getItem(LS_BIN) || '';
+  let   isSaving = false;
+
+  const JB_HDR = () => ({
+    'Content-Type': 'application/json',
+    'X-Master-Key': JB_KEY,
+    'X-Bin-Versioning': 'false'
+  });
+
+  async function jbEnsureBin() {
+    if (BIN_ID) return;
+    // 找既有的 Bin
+    try {
+      const r = await fetch(JB_API + '/b', { headers: { 'X-Master-Key': JB_KEY } });
+      if (r.ok) {
+        const list = await r.json();
+        if (Array.isArray(list)) {
+          const found = list.find(b => b?.record?.metadata?.name === JB_NAME);
+          if (found) { BIN_ID = found.record.metadata.id; localStorage.setItem(LS_BIN, BIN_ID); return; }
+        }
+      }
+    } catch(e) {}
+    // 建新的
+    const r2 = await fetch(JB_API + '/b', {
+      method: 'POST',
+      headers: { ...JB_HDR(), 'X-Bin-Name': JB_NAME },
+      body: JSON.stringify({ todos: [] })
+    });
+    const j = await r2.json();
+    BIN_ID = j.metadata.id;
+    localStorage.setItem(LS_BIN, BIN_ID);
+  }
+
+  async function jbRead() {
+    const r = await fetch(JB_API + '/b/' + BIN_ID + '/latest', {
+      headers: { 'X-Master-Key': JB_KEY, 'X-Bin-Meta': 'false' }
+    });
+    const d = await r.json();
+    return Array.isArray(d.todos) ? d.todos : [];
+  }
+
+  async function jbWrite() {
+    isSaving = true;
+    try {
+      await fetch(JB_API + '/b/' + BIN_ID, {
+        method: 'PUT', headers: JB_HDR(), body: JSON.stringify({ todos })
+      });
+    } finally { isSaving = false; }
+  }
+
+  async function todoSync() {
+    if (isSaving) return;
+    try {
+      const fresh = await jbRead();
+      // 只在資料真的不同時才更新，避免畫面閃爍
+      if (JSON.stringify(fresh) !== JSON.stringify(todos)) {
+        todos = fresh;
+        renderTodos();
+      }
+      setSyncDot(true);
+    } catch(e) { setSyncDot(false); }
+  }
+
+  function setSyncDot(ok) {
+    const el = document.getElementById('sync-dot');
+    if (!el) return;
+    el.title = ok ? '代辦已同步' : '同步失敗';
+    el.style.background = ok ? 'var(--mint)' : '#f59e0b';
   }
 
   function initials(n) { return n.length >= 2 ? n.slice(-2) : n; }
@@ -631,7 +707,7 @@
       sendSheet(name, date, states[name].in, time);
       toast(name + '  下班打卡  ' + time, 'info');
     }
-    persist(); renderEmps();
+    persistLocal(); renderEmps();
   }
 
   const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyUTNmo9bAMfMgtrsNeX-yoDdG9pk30WNY6J-QiozGr-JEqs_7qas3-cO63-0t8YWT-Pg/exec';
@@ -645,12 +721,12 @@
     const n = inp.value.trim();
     if (!n) return;
     if (emps.includes(n)) { toast('員工已存在', 'warn'); return; }
-    emps.push(n); persist(); inp.value = ''; renderEmps();
+    emps.push(n); persistLocal(); inp.value = ''; renderEmps();
   }
 
   function removeEmp(i) {
     if (!confirm('確定移除「' + emps[i] + '」？')) return;
-    delete states[emps[i]]; emps.splice(i, 1); persist(); renderEmps();
+    delete states[emps[i]]; emps.splice(i, 1); persistLocal(); renderEmps();
   }
 
   /* ── RENDER TODOS ── */
@@ -690,16 +766,27 @@
     }
   }
 
-  function addTodo() {
+  async function addTodo() {
     const ta = document.getElementById('new-todo');
     const t  = ta.value.trim();
     if (!t) return;
-    todos.push({ text: t, done: false }); persist(); ta.value = ''; renderTodos();
+    ta.value = '';
+    todos.push({ text: t, done: false });
+    renderTodos();
+    await jbWrite();
   }
 
-  function toggleTodo(i) { todos[i].done = !todos[i].done; persist(); renderTodos(); }
+  async function toggleTodo(i) {
+    todos[i].done = !todos[i].done;
+    renderTodos();
+    await jbWrite();
+  }
 
-  function delTodo(i) { todos.splice(i, 1); persist(); renderTodos(); }
+  async function delTodo(i) {
+    todos.splice(i, 1);
+    renderTodos();
+    await jbWrite();
+  }
 
   function copyTodo(i) {
     const text = todos[i].text;
@@ -722,7 +809,7 @@
   function clearDone() {
     if (!todos.some(t => t.done)) { toast('沒有已完成的事項', 'warn'); return; }
     if (!confirm('確定清除所有已完成的事項？')) return;
-    todos = todos.filter(t => !t.done); persist(); renderTodos(); toast('已清除完成項目', 'info');
+    todos = todos.filter(t => !t.done); renderTodos(); jbWrite(); toast('已清除完成項目', 'info');
   }
 
 
@@ -760,7 +847,12 @@
 
   /* ── INIT ── */
   tick(); setInterval(tick, 1000);
-  renderEmps(); renderTodos();
+  renderEmps();
+  // JSONBin：確保 Bin 存在後讀取，之後每 6 秒同步
+  jbEnsureBin().then(() => {
+    todoSync();
+    setInterval(todoSync, 6000);
+  }).catch(() => { renderTodos(); });
 </script>
 </body>
 </html>
