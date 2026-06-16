@@ -717,10 +717,10 @@
     persist(); renderEmps();
   }
 
+  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyUTNmo9bAMfMgtrsNeX-yoDdG9pk30WNY6J-QiozGr-JEqs_7qas3-cO63-0t8YWT-Pg/exec';
+
   function sendSheet(name, date, inT, outT) {
-    const url = localStorage.getItem('wds_sheet');
-    if (!url) return;
-    fetch(url + '?' + new URLSearchParams({ name, date, in: inT, out: outT }), { mode: 'no-cors' }).catch(() => {});
+    fetch(SHEET_URL + '?' + new URLSearchParams({ name, date, in: inT, out: outT }), { mode: 'no-cors' }).catch(() => {});
   }
 
   function addEmp() {
